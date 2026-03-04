@@ -26,7 +26,7 @@ public class Board {
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 Tile tile = tiles[i][j];
-                System.out.print(tile.getType() + " ");
+                System.out.print(tile + " ");
             }
             System.out.println();
         }
