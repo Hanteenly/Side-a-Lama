@@ -31,4 +31,20 @@ public class Board {
             System.out.println();
         }
     }
+    public Tile getTile(int row, int col){
+        return tiles[row][col];
+    }
+
+    public Position findEmptyTile(){
+        Position pos;
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(tiles[i][j].getType() == TileType.EMPTY){
+                    pos = new Position(i, j);
+                    return pos;
+                }
+            }
+        }
+        return null;
+    }
 }
