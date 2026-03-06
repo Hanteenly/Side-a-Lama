@@ -5,6 +5,5 @@ public enum TileType {
     CACTUS,
     SUN,
     HAT,
-    BOOTS,
-    EMPTY
+    BOOTS
 }
