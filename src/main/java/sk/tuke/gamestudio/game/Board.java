@@ -57,10 +57,81 @@ public class Board {
     }
 
     public void insertFromTop(int col, Tile tile) {
-        for (int row = tiles[col].length - 1; row > 0; row--) {
+        for (int row = rows - 1; row > 0; row--) {
             tiles[row][col] = tiles[row-1][col];
         }
         tiles[0][col] = tile;
+    }
+
+    public void findMatches(){
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols - 2; j++) {
+                if ((tiles[i][j] != null) && (tiles[i][j+1] != null) && (tiles[i][j+2] != null)) {
+                    if (tiles[i][j].getType() == tiles[i][j + 1].getType()) {
+                        if (tiles[i][j].getType() == tiles[i][j + 2].getType()) {
+                            tiles[i][j] = null;
+                            tiles[i][j + 1] = null;
+                            tiles[i][j + 2] = null;
+                        }
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < cols; i++){
+            for(int j = 0; j < rows - 2; j++){
+                if((tiles[j][i] != null) && (tiles[j+1][i] != null) && (tiles[j+2][i] != null)) {
+                    if (tiles[j][i].getType() == tiles[j + 1][i].getType()) {
+                        if (tiles[j][i].getType() == tiles[j + 2][i].getType()) {
+                            tiles[j][i] = null;
+                            tiles[j + 1][i] = null;
+                            tiles[j + 2][i] = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void dropTiles(){
+        for(int col = 0; col < cols; col++){
+            for(int row = 1; row < rows; row++){
+                if(tiles[row][col] == null){
+                    for(int i = row; i > 0; i--){
+                        tiles[i][col] =  tiles[i-1][col];
+                    }
+                    tiles[0][col] = null;
+                }
+            }
+        }
+    }
+
+    public boolean hasMatches(){
+        boolean hasMatches = false;
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols - 2; j++) {
+                if ((tiles[i][j] != null) && (tiles[i][j+1] != null) && (tiles[i][j+2] != null)) {
+                    if (tiles[i][j].getType() == tiles[i][j + 1].getType()) {
+                        if (tiles[i][j].getType() == tiles[i][j + 2].getType()) {
+                            hasMatches = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < cols; i++){
+            for(int j = 0; j < rows - 2; j++){
+                if((tiles[j][i] != null) && (tiles[j+1][i] != null) && (tiles[j+2][i] != null)) {
+                    if (tiles[j][i].getType() == tiles[j + 1][i].getType()) {
+                        if (tiles[j][i].getType() == tiles[j + 2][i].getType()) {
+                            hasMatches = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return hasMatches;
     }
 }
 
