@@ -133,6 +133,28 @@ public class Board {
         }
         return hasMatches;
     }
+    public void cleanBoard(){
+        while(hasMatches() == true){
+            findMatches();
+            dropTiles();
+        }
+    }
+
+    public Tile randomTile(){
+        int randomVal = (int)(Math.random()*TileType.values().length);
+        TileType type = TileType.values()[randomVal];
+        Tile tile = new Tile(type);
+        return tile;
+    }
+
+    public int getRows(){
+        return rows;
+    }
+
+    public int getCols(){
+        return cols;
+    }
+
 }
 
 
