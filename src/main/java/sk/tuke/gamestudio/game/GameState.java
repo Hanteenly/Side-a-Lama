@@ -2,6 +2,8 @@ package sk.tuke.gamestudio.game;
 
 enum GameState {
     PLAYING,
-    SOLVED,
-    FAILED
+    PLAYER1_WIN,
+    PLAYER2_WIN,
+    FAILED,
+    SOLVED
 }

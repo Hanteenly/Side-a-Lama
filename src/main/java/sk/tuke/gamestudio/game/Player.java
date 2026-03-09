@@ -8,10 +8,17 @@ public class Player {
         this.name = name;
         this.score = score;
     }
+
     public String getName(){
         return name;
     }
+
     public int getScore(){
         return score;
     }
+
+    public void addToScore(int score){
+        this.score += score;
+    }
+
 }
