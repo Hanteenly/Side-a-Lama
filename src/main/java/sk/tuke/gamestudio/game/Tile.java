@@ -9,4 +9,8 @@ public class Tile {
     public TileType getType(){
         return type;
     }
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 }
