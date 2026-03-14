@@ -18,6 +18,22 @@ public class Board {
                 TileType type = TileType.values()[randomVal];
                 Tile tile = new Tile(type);
                 tiles[i][j] = tile;
+                if(j > 0){
+                    while(tiles[i][j].getType() == tiles[i][j-1].getType()){
+                        int randomVal2 = (int)(Math.random()*TileType.values().length);
+                        TileType type2 = TileType.values()[randomVal2];
+                        Tile tile2 = new Tile(type2);
+                        tiles[i][j] = tile2;
+                    }
+                }
+                if(i > 0){
+                    while(tiles[i][j].getType() == tiles[i-1][j].getType()){
+                        int randomVal3= (int)(Math.random()*TileType.values().length);
+                        TileType type3 = TileType.values()[randomVal3];
+                        Tile tile3 = new Tile(type3);
+                        tiles[i][j] = tile3;
+                    }
+                }
             }
         }
     }
@@ -92,14 +108,17 @@ public class Board {
         }
     }
 
-    public void dropTiles(){
-        for(int col = 0; col < cols; col++){
-            for(int row = 1; row < rows; row++){
-                if(tiles[row][col] == null){
-                    for(int i = row; i > 0; i--){
-                        tiles[i][col] =  tiles[i-1][col];
+    public void dropTiles() {
+        for (int col = 0; col < cols; col++) {
+            for (int row = rows - 1; row > 0; row--) {
+                if (tiles[row][col] == null) {
+                    for (int i = row - 1; i >= 0; i--) {
+                        if (tiles[i][col] != null) {
+                            tiles[row][col] = tiles[i][col];
+                            tiles[i][col] = null;
+                            break;
+                        }
                     }
-                    tiles[0][col] = null;
                 }
             }
         }

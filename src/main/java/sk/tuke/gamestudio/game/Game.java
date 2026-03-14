@@ -8,6 +8,8 @@ public class Game {
     private Player player2;
     private Player currentPlayer;
 
+    private String Tile;
+    private Tile tile;
     public Game(int rows, int cols) {
         player1 = new Player("PLayer1", 500);
         player2 = new Player("PLayer2", 500);
@@ -36,13 +38,12 @@ public class Game {
     }
 
     public void playTurn(Direction direction, int index){
-        Tile tile = board.randomTile();
         if(direction == Direction.LEFT){
-            board.insertFromLeft(index, tile);
+            board.insertFromLeft(index, gettile());
         }else if(direction == Direction.RIGHT) {
-            board.insertFromRight(index, tile);
+            board.insertFromRight(index, gettile());
         }else{
-            board.insertFromTop(index, tile);
+            board.insertFromTop(index, gettile());
         }
 
         if(board.hasMatches()){
@@ -60,6 +61,12 @@ public class Game {
         checkGameEnd();
     }
 
+    public void randomTile(){
+        Tile tile = board.randomTile();
+        this.Tile = tile.toString();
+        this.tile = tile;
+    }
+
     public void checkGameEnd() {
         if (player1.getScore() <= 0){
             state = GameState.PLAYER2_WIN;
@@ -71,5 +78,30 @@ public class Game {
 
     public void printBoard(){
         board.print();
+    }
+    public void SetTile(String Tile){
+        this.Tile = Tile;
+    }
+
+    public String getTile(){
+        return Tile;
+    }
+    public Tile gettile(){
+        return tile;
+    }
+
+    public int getScore1(){
+        return player1.getScore();
+    }
+    public int getScore2(){
+        return player2.getScore();
+    }
+
+    public String getCurrentlyPlayer(){
+        if(currentPlayer == player1){
+            return "PLayer1";
+        }else{
+            return "PLayer2";
+        }
     }
 }

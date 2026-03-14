@@ -4,21 +4,20 @@ import java.util.Scanner;
 
 public class ConsoleUI {
 
-    private Field field;
-    private Game game = new Game(3, 3);
+    private Game game;
 
-    public void play(Field field){
-        this.field = field;
-        while(field.getState() == GameState.PLAYING){
+    public void play(Game game){
+        this.game = game;
+        while(game.getState() == GameState.PLAYING){
             show();
             handleInput();
         }
 
         show();
 
-        if(field.getState() == GameState.PLAYER1_WIN){
+        if(game.getState() == GameState.PLAYER1_WIN){
             System.out.println("Player 1 wins!");
-        }else if(field.getState() == GameState.PLAYER2_WIN){
+        }else if(game.getState() == GameState.PLAYER2_WIN){
             System.out.println("Player 2 wins!");
         }
     }
@@ -29,7 +28,9 @@ public class ConsoleUI {
 
     public void handleInput(){
         Scanner scanner = new Scanner(System.in);
-
+        game.randomTile();
+        System.out.println("Tile: " + game.getTile() + "\n" + "player1 - " + game.getScore1() + " | player2 - " + game.getScore2());
+        System.out.println("CurrentlyPlayer: " + game.getCurrentlyPlayer());
         System.out.println("Enter move (L/R/T index):");
         String dir = scanner.next();
         int index = scanner.nextInt();
@@ -44,5 +45,7 @@ public class ConsoleUI {
         }
 
         game.playTurn(direction, index);
+        for(int i = 0; i < 5; i++)System.out.println();
     }
+
 }
