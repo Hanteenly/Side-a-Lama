@@ -1,9 +1,9 @@
 package sk.tuke.gamestudio.game;
 
 public enum TileType {
-    С,
-    R,
-    O,
-    I,
-    Z
+    СCCC,
+    RRRR,
+    OOOO,
+    IIII,
+    ZZZZ
 }
