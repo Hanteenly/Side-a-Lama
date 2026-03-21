@@ -12,9 +12,13 @@ public class Player {
     public int getScore(){
         return score;
     }
-
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
     public void addToScore(int score){
         this.score += score;
     }
-
 }

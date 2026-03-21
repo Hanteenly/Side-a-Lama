@@ -11,12 +11,19 @@ public class Game {
     private String Tile;
     private Tile tile;
     public Game(int rows, int cols) {
-        player1 = new Player("PLayer1", 500);
-        player2 = new Player("PLayer2", 500);
+        player1 = new Player("Player1", 500);
+        player2 = new Player("Player2", 500);
         currentPlayer = player1;
 
         board = new Board(rows, cols);
         this.state = GameState.PLAYING;
+    }
+
+    public void SetPlayer1(String player) {
+        this.player1.setName(player);
+    }
+    public void SetPlayer2(String player) {
+        this.player2.setName(player);
     }
 
     public void switchPlayer(){
