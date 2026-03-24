@@ -2,28 +2,37 @@ package sk.tuke.gamestudio.game;
 
 public class Game {
     private Board board;
-    private GameState state;
+    private State state;
 
     private Player player1;
     private Player player2;
     private Player currentPlayer;
 
+    private String player1Name = "player1";
+    private String player2Name = "player2";
+
     private String Tile;
     private Tile tile;
     public Game(int rows, int cols) {
-        player1 = new Player("Player1", 500);
-        player2 = new Player("Player2", 500);
+        player1 = new Player(player1Name, 500);
+        player2 = new Player(player2Name, 500);
         currentPlayer = player1;
 
         board = new Board(rows, cols);
-        this.state = GameState.PLAYING;
+        this.state = State.PLAYING;
     }
 
+    public String getPlayer1(){
+        return player1Name;
+    }
     public void SetPlayer1(String player) {
-        this.player1.setName(player);
+        this.player1Name = player;
+    }
+    public String getPlayer2(){
+        return player2Name;
     }
     public void SetPlayer2(String player) {
-        this.player2.setName(player);
+        this.player2Name = player;
     }
 
     public void switchPlayer(){
@@ -40,7 +49,7 @@ public class Game {
         return currentPlayer;
     }
 
-    public GameState getState(){
+    public State getState(){
         return state;
     }
 
@@ -76,10 +85,10 @@ public class Game {
 
     public void checkGameEnd() {
         if (player1.getScore() <= 0){
-            state = GameState.PLAYER2_WIN;
+            state = State.PLAYER2_WIN;
         }
         if (player2.getScore() <= 0) {
-            state = GameState.PLAYER1_WIN;
+            state = State.PLAYER1_WIN;
         }
     }
 
@@ -110,5 +119,9 @@ public class Game {
         }else{
             return "PLayer2";
         }
+    }
+    public void setScores(int s1, int s2) {
+        this.player1 = new Player(player1Name, s1);
+        this.player2 = new Player(player2Name, s2);
     }
 }

@@ -20,4 +20,12 @@ class RatingServiceTest {
 
         assertEquals(3, service.getAverageRating("side-a-lama"));
     }
+    @Test
+    void testUpdateRating() throws RatingException {
+        service.reset();
+        service.setRating(new Rating("side-a-lama", "PlayerX", 5, new Date()));
+        service.setRating(new Rating("side-a-lama", "PlayerX", 1, new Date()));
+
+        assertEquals(1, service.getAverageRating("side-a-lama"));
+    }
 }

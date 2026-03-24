@@ -1,6 +1,5 @@
 package sk.tuke.gamestudio.service;
 
-import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 
 import java.sql.*;
@@ -29,6 +28,29 @@ public class RatingServiceJDBC implements  RatingService{
         } catch (SQLException e) {
             throw new RatingException("Problem inserting rating", e);
         }
+    }
+    @Override
+    public List<Rating> getAllRatings() {
+        List<Rating> ratings = new ArrayList<>();
+        String sql = "SELECT rating, game, player, rated_date FROM rating";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Rating rating = new Rating(
+                        "side-a-lama",
+                        rs.getString("player"),
+                        rs.getInt("rating"),
+                        rs.getTimestamp("rated_date")
+                );
+                ratings.add(rating);
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+        return ratings;
     }
 
     @Override
@@ -74,4 +96,5 @@ public class RatingServiceJDBC implements  RatingService{
             throw new RatingException("Problem deleting rating", e);
         }
     }
+
 }

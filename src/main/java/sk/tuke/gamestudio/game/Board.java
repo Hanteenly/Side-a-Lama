@@ -1,9 +1,15 @@
 package sk.tuke.gamestudio.game;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+
 public class Board {
     private int rows;
     private int cols;
     private Tile[][] tiles;
+    private String StringBuilder[];
     public Board(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
@@ -39,13 +45,28 @@ public class Board {
     }
 
     public void print(){
+        System.out.print(" ");
+        for(int i = 0; i < cols; i++) {
+            System.out.print("______");
+        }
+        System.out.println();
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 Tile tile = tiles[i][j];
+                if(j == 0){
+                    System.out.print(" | ");
+                }
                 System.out.print(tile + " ");
             }
+            System.out.print(" | ");
             System.out.println();
         }
+        System.out.print(" ");
+        for(int i = 0; i < cols; i++) {
+            System.out.print("______");
+        }
+        System.out.println();
+
     }
     public Tile getTile(int row, int col){
         return tiles[row][col];
@@ -58,25 +79,75 @@ public class Board {
         tiles[p2.row][p2.col] = tile;
     }
 
-    public void insertFromLeft(int row, Tile tile){
-        for(int col = tiles[row].length - 1; col > 0; col--){
-            tiles[row][col] = tiles[row][col-1];
+    public void insertFromLeft(int row, Tile newTile) {
+        List<Tile> activeTiles = new ArrayList<>();
+
+        for (int col = 0; col < cols; col++) {
+            if (tiles[row][col] != null) {
+                activeTiles.add(tiles[row][col]);
+            }
         }
-        tiles[row][0] = tile;
+
+        activeTiles.add(0, newTile);
+        if (activeTiles.size() > cols) {
+            activeTiles.remove(activeTiles.size() - 1);
+        }
+
+        for (int col = 0; col < cols; col++) {
+            if (col < activeTiles.size()) {
+                tiles[row][col] = activeTiles.get(col);
+            } else {
+
+                tiles[row][col] = null;
+            }
+        }
     }
 
-    public void insertFromRight(int row, Tile tile){
-        for(int col = 0; col < tiles[row].length - 1; col++){
-            tiles[row][col] = tiles[row][col+1];
+    public void insertFromRight(int row, Tile newTile){
+        List<Tile> activeTiles = new ArrayList<>();
+
+        for (int col = 0; col < tiles[row].length; col++) {
+            if (tiles[row][col] != null) {
+                activeTiles.add(tiles[row][col]);
+            }
         }
-        tiles[row][tiles[row].length - 1] = tile;
+
+        activeTiles.add(newTile);
+
+        if (activeTiles.size() > tiles[row].length) {
+            activeTiles.remove(0);
+        }
+        for (int col = 0; col < tiles[row].length; col++) {
+            if (col < activeTiles.size()) {
+                tiles[row][col] = activeTiles.get(col);
+            } else {
+                tiles[row][col] = null;
+            }
+        }
     }
 
-    public void insertFromTop(int col, Tile tile) {
-        for (int row = rows - 1; row > 0; row--) {
-            tiles[row][col] = tiles[row-1][col];
+    public void insertFromTop(int col, Tile newTile) {
+        List<Tile> activeTiles = new ArrayList<>();
+
+        for (int row = 0; row < rows; row++) {
+            if (tiles[row][col] != null) {
+                activeTiles.add(tiles[row][col]);
+            }
         }
-        tiles[0][col] = tile;
+
+        activeTiles.add(0, newTile);
+
+        if (activeTiles.size() > rows) {
+            activeTiles.remove(activeTiles.size() - 1);
+        }
+
+        for (int row = 0; row < rows; row++) {
+            if (row < activeTiles.size()) {
+                tiles[row][col] = activeTiles.get(row);
+            } else {
+                tiles[row][col] = null;
+            }
+        }
     }
 
     public void findMatches(){
@@ -153,6 +224,7 @@ public class Board {
         return hasMatches;
     }
     public void cleanBoard(){
+        dropTiles();
         while(hasMatches() == true){
             findMatches();
             dropTiles();
@@ -174,6 +246,34 @@ public class Board {
         return cols;
     }
 
+    public String toDataString(){
+        StringJoiner sj = new StringJoiner(",");
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(tiles[i][j] == null) {
+                    sj.add("NULL");
+                }else{
+                    sj.add(tiles[i][j].getType().name());
+                }
+            }
+        }
+        return sj.toString();
+    }
+
+    public void loadFromDataString(String data){
+        String[] parts = data.split(",");
+        int index = 0;
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++) {
+                if (parts[index].equals("NULL")) {
+                    tiles[i][j] = null;
+                } else {
+                    tiles[i][j] = new Tile(TileType.valueOf(parts[index]));
+                }
+                index++;
+            }
+        }
+    }
 }
 
 

@@ -4,6 +4,6 @@ public class Main {
     public static void main(String[] args) {
         ConsoleUI console = new ConsoleUI();
         Game f = new Game(4, 4);
-        console.play(f);
+        console.menu(f);
     }
 }
