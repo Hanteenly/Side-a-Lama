@@ -54,4 +54,7 @@ Create a new package inside `src/main/java/sk.tuke.gamestudio.game`. Name it aft
 Place all files and packages related to your game (e.g. `Main.java`, `core`, `consoleui`, etc.) into this package.
 When creating new unit tests, place them into the `src/test/java/sk.tuke.gamestudio.game.[yourGame]` package.
 
+## Video about project
+https://youtu.be/gISTCofShqg
+
 Use the [standard Maven directory layout](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) and GameStudio recommended directory structure when adding more classes.
