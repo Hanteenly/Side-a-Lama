@@ -1,6 +1,24 @@
 package sk.tuke.gamestudio.entity;
 
-public class GameState {
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Entity;
+import java.io.Serializable;
+
+@Entity
+@NamedQuery(name = "GameState.getGameState",
+        query = "SELECT g FROM GameState g WHERE g = g")
+@NamedQuery(name = "GameState.load",
+        query = "SELECT g FROM GameState g WHERE g.GameName = :GameName")
+@NamedQuery(name = "GameState.resetGameStates",
+        query = "DELETE FROM GameState")
+public class GameState implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private int ident;
+
     private String GameName;
     private String Player1;
     private String Player2;
@@ -9,6 +27,9 @@ public class GameState {
     private int score2;
     private String board_data;
 
+    public GameState() {
+
+    }
     public GameState(String GameName, String Player1, String Player2, String CurrentPlayer, int score1, int score2, String board_data) {
         this.GameName = GameName;
         this.Player1 = Player1;
@@ -17,6 +38,13 @@ public class GameState {
         this.score1 = score1;
         this.score2 = score2;
         this.board_data = board_data;
+    }
+
+    public int getIdent() {
+        return ident;
+    }
+    public void setIdent(int ident) {
+        this.ident = ident;
     }
     public String getGameName() {
         return GameName;

@@ -1,19 +1,46 @@
 package sk.tuke.gamestudio.entity;
 
-
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Entity;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Rating {
+@Entity
+@NamedQuery(name = "Rating.getAllRatings",
+        query = "SELECT rating FROM Rating rating")
+@NamedQuery(name = "Rating.getRating",
+        query = "SELECT r FROM Rating r WHERE r.game=:game AND r.player=:player")
+@NamedQuery(name = "Rating.getAverageRating",
+        query = "SELECT AVG(r.rating) FROM Rating r WHERE r.game=:game")
+@NamedQuery(name = "Rating.resetRatings",
+        query = "DELETE FROM Rating")
+
+public class Rating implements Serializable {
+    @Id
+    @GeneratedValue
+    private int ident;
+
     private String game;
     private String player;
     private int rating;
     private Date rated_date;
 
+    public Rating() {
+
+    }
     public Rating(String game, String player, int rating, Date rated_date) {
         this.game = game;
         this.player = player;
         this.rating = rating;
         this.rated_date = rated_date;
+    }
+    public int getIdent() {
+        return ident;
+    }
+    public void setIdent(int ident) {
+        this.ident = ident;
     }
 
     public String getGame() {
