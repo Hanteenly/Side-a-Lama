@@ -1,5 +1,7 @@
 package sk.tuke.gamestudio.service;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.GameState;
 
 import javax.persistence.EntityManager;
@@ -8,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
 @Transactional
 public class GameStateServiceJPA implements GameStateService {
     @PersistenceContext
@@ -21,7 +24,7 @@ public class GameStateServiceJPA implements GameStateService {
     @Override
     public GameState load(String gameName) throws GameStateException {
         List<GameState> states = entityManager.createNamedQuery("GameState.load")
-                .setParameter("GameName", gameName)
+                .setParameter("gameName", gameName)
                 .getResultList();
 
         if (!states.isEmpty()) {

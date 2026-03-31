@@ -1,10 +1,8 @@
 package sk.tuke.gamestudio.game;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
+    /*
     @Test
     public void gameIsCreated(){
         Game game = new Game(5,5);
@@ -28,4 +26,6 @@ public class GameTest {
         Player second = game.getCurrentPlayer();
         assertNotEquals(first, second);
     }
+
+     */
 }

@@ -1,25 +1,22 @@
 package sk.tuke.gamestudio.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@NamedQuery(name = "GameState.getGameState",
-        query = "SELECT g FROM GameState g WHERE g = g")
-@NamedQuery(name = "GameState.load",
-        query = "SELECT g FROM GameState g WHERE g.GameName = :GameName")
-@NamedQuery(name = "GameState.resetGameStates",
-        query = "DELETE FROM GameState")
+@NamedQueries({
+        @NamedQuery(name = "GameState.load",
+                query = "SELECT g FROM GameState g WHERE g.gameName = :gameName ORDER BY g.ident DESC"),
+        @NamedQuery(name = "GameState.resetGameStates",
+                query = "DELETE FROM GameState g")
+})
 public class GameState implements Serializable {
 
     @Id
     @GeneratedValue
     private int ident;
 
-    private String GameName;
+    private String gameName;
     private String Player1;
     private String Player2;
     private String CurrentPlayer;
@@ -31,7 +28,7 @@ public class GameState implements Serializable {
 
     }
     public GameState(String GameName, String Player1, String Player2, String CurrentPlayer, int score1, int score2, String board_data) {
-        this.GameName = GameName;
+        this.gameName = GameName;
         this.Player1 = Player1;
         this.Player2 = Player2;
         this.CurrentPlayer = CurrentPlayer;
@@ -47,7 +44,7 @@ public class GameState implements Serializable {
         this.ident = ident;
     }
     public String getGameName() {
-        return GameName;
+        return gameName;
     }
 
     public String getPlayer1() {
@@ -76,7 +73,7 @@ public class GameState implements Serializable {
 
     public String toString(){
         return "GameState{"
-                + "GameName = " + GameName + '\''
+                + "GameName = " + gameName + '\''
                 + ", Player1 = " + Player1 + '\''
                 + ", Player2 = " + Player2 + '\''
                 + ", CurrentPlayer = " + CurrentPlayer + '\''

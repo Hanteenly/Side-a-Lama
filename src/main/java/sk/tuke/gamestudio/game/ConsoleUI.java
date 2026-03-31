@@ -1,32 +1,36 @@
 package sk.tuke.gamestudio.game;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.Scanner;
 
+@Component
 public class ConsoleUI {
-
-    private Game game;
-    private int on = 0;
-    private Score score;
-    private Rating rating;
-    private Comment comment;
     private String name1;
     private String name2;
-    private ScoreService scoreService = new ScoreServiceJDBC();
-    private CommentService commentService = new CommentServiceJDBC();
-    private RatingService ratingService = new RatingServiceJDBC();
     private String currentSaveName;
-    private GameStateService gameStateService = new GameStateServiceJDBC();
 
-    public void play(Game game){
+    @Autowired
+    private Game game;
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private GameStateService gameStateService;
+
+    public void play(){
             Scanner input = new Scanner(System.in);
             System.out.println("Game name: ");
             this.currentSaveName = input.nextLine();
@@ -54,7 +58,6 @@ public class ConsoleUI {
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
-            this.game = game;
             while (game.getState() == State.PLAYING) {
                 show();
                 handleInput();
@@ -111,7 +114,7 @@ public class ConsoleUI {
         }
 
         if (cmd.equalsIgnoreCase("menu")) {
-            menu(game);
+            menu();
             return;
         }
 
@@ -129,9 +132,8 @@ public class ConsoleUI {
         }
     }
 
-    public void menu(Game game){
+    public void menu(){
 
-        this.game = game;
         for(int i = 0; i < 10; i++)System.out.println();
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -144,7 +146,7 @@ public class ConsoleUI {
             System.out.println("Choose one:");
             String choice = scanner.nextLine();
             if (choice.equalsIgnoreCase("play")) {
-                play(game);
+                play();
             } else if (choice.equalsIgnoreCase("score")) {
                 showTopScores();
             } else if (choice.equalsIgnoreCase("comment")) {

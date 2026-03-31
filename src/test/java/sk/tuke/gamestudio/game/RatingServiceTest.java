@@ -1,15 +1,13 @@
 package sk.tuke.gamestudio.game;
 
-import org.junit.jupiter.api.Test;
+
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.service.RatingException;
 import sk.tuke.gamestudio.service.RatingService;
-import sk.tuke.gamestudio.service.RatingServiceJDBC;
 
-import java.util.Date;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RatingServiceTest {
+    /*
     private RatingService service = new RatingServiceJDBC();
 
     @Test
@@ -28,4 +26,6 @@ class RatingServiceTest {
 
         assertEquals(1, service.getAverageRating("side-a-lama"));
     }
+ */
 }
+

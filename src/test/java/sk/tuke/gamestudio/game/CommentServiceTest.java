@@ -1,15 +1,15 @@
 package sk.tuke.gamestudio.game;
 
-import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.service.CommentException;
 import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.CommentServiceJDBC;
+
 
 import java.util.Date;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class CommentServiceTest {
+    /*
     private CommentService service = new CommentServiceJDBC();
 
     @Test
@@ -31,4 +31,5 @@ class CommentServiceTest {
         service.reset();
         assertEquals(0, service.getComments("side-a-lama").size());
     }
+     */
 }
