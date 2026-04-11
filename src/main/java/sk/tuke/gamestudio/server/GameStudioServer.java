@@ -21,11 +21,6 @@ public class GameStudioServer {
     }
 
     @Bean
-    public GameStateService gameStateService() {
-        return new GameStateServiceJPA();
-    }
-
-    @Bean
     public CommentService commentService() {
         return new CommentServiceJPA();
     }
@@ -33,5 +28,10 @@ public class GameStudioServer {
     @Bean
     public RatingService ratingService() {
         return new RatingServiceJPA();
+    }
+
+    @Bean
+    public GameStateService gameStateService() {
+        return new GameStateServiceJPA();
     }
 }
