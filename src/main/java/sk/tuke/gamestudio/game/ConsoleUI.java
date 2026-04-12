@@ -46,7 +46,7 @@ public class ConsoleUI {
                 this.name1 = savedState.getPlayer1();
                 this.name2 = savedState.getPlayer2();
             } else {
-                System.out.println("new game: ");
+                System.out.println("NEW GAME ");
                 System.out.println("Enter your name1: ");
                 this.name1 = input.nextLine();
                 System.out.println("Enter your name2: ");

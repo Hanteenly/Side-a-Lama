@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class CommentServiceRestClient implements CommentService {
-    private final String url = "http://localhost:8080/api/comment";
+    private final String url = "http://localhost:8888/api/comment";
 
     @Autowired
     private RestTemplate restTemplate;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 public class ScoreServiceRestClient implements ScoreService {
-    private final String url = "http://localhost:8080/api/score";
+    private final String url = "http://localhost:8888/api/score";
 
 
     @Autowired

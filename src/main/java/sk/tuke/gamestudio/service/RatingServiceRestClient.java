@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class RatingServiceRestClient implements RatingService {
-    private final String url = "http://localhost:8080/api/rating";
+    private final String url = "http://localhost:8888/api/rating";
 
     @Autowired
     private RestTemplate restTemplate;

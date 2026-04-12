@@ -7,7 +7,7 @@ import sk.tuke.gamestudio.entity.GameState;
 
 @Component
 public class GameStateServiceRestClient implements GameStateService {
-    private final String url = "http://localhost:8080/api/gameState";
+    private final String url = "http://localhost:8888/api/gameState";
 
     @Autowired
     private RestTemplate restTemplate;
