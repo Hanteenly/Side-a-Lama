@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.service;
 
+import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Score;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
 @Transactional
 public class ScoreServiceJPA implements ScoreService {
     @PersistenceContext

@@ -1,2 +1,2 @@
-GET http://localhost:8080/api/score/Side-a-Lama
+GET http://localhost:8888/api/score/Side-a-Lama
 

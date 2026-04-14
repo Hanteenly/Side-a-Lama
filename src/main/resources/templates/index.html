@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameStudio</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<div th:replace="fragments::header"></div>
+
+<main class="container">
+    <section class="hero">
+        <h1 class="game-title"> GameStudio</h1>
+        <p class="subtitle">Pick a game and play.</p>
+    </section>
+
+    <section class="games-grid">
+        <a href="/sidealama/new" class="game-card">
+            <h3>Side-a-Lama</h3>
+            <p>Slide tiles, match three, steal points.</p>
+            <span class="btn btn-primary">Play →</span>
+        </a>
+    </section>
+</main>
+
+<div th:replace="fragments::footer"></div>
+</body>
+</html>

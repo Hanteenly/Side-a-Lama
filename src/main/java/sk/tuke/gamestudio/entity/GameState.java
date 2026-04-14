@@ -17,8 +17,8 @@ public class GameState implements Serializable {
     private int ident;
 
     private String gameName;
-    private String Player1;
-    private String Player2;
+    private String player1;
+    private String player2;
     private String CurrentPlayer;
     private int score1;
     private int score2;
@@ -27,10 +27,10 @@ public class GameState implements Serializable {
     public GameState() {
 
     }
-    public GameState(String GameName, String Player1, String Player2, String CurrentPlayer, int score1, int score2, String board_data) {
+    public GameState(String GameName, String player1, String player2, String CurrentPlayer, int score1, int score2, String board_data) {
         this.gameName = GameName;
-        this.Player1 = Player1;
-        this.Player2 = Player2;
+        this.player1 = player1;
+        this.player2 = player2;
         this.CurrentPlayer = CurrentPlayer;
         this.score1 = score1;
         this.score2 = score2;
@@ -48,11 +48,11 @@ public class GameState implements Serializable {
     }
 
     public String getPlayer1() {
-        return Player1;
+        return player1;
     }
 
     public String getPlayer2() {
-        return Player2;
+        return player2;
     }
 
     public String getCurrentPlayer() {
@@ -74,8 +74,8 @@ public class GameState implements Serializable {
     public String toString(){
         return "GameState{"
                 + "GameName = " + gameName + '\''
-                + ", Player1 = " + Player1 + '\''
-                + ", Player2 = " + Player2 + '\''
+                + ", Player1 = " + player1 + '\''
+                + ", Player2 = " + player2 + '\''
                 + ", CurrentPlayer = " + CurrentPlayer + '\''
                 + ", score1 = " + score1 + '\''
                 + ", score2 = " + score2 + '\''

@@ -24,36 +24,35 @@ public class SpringClient {
         new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
     }
 
-    @Bean
+
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    @Bean
+
     public CommandLineRunner runner(ConsoleUI ui) {
         return args -> ui.play();
     }
 
-    @Bean
+
     public Game game() {
         return new Game(4, 4);
     }
 
-    @Bean
+
     public ScoreService scoreService() {
         return new ScoreServiceRestClient();
     }
 
-    @Bean
+
     public CommentService commentService() {
         return new CommentServiceRestClient();
     }
 
-    @Bean
     public RatingService ratingService() {
         return new RatingServiceRestClient();
     }
-    @Bean
+
     public GameStateService gameStateService() {
         return new GameStateServiceRestClient();
     }

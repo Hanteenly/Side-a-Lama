@@ -8,9 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import sk.tuke.gamestudio.service.*;
 
-@SpringBootApplication
 @Configuration
-@EntityScan("sk.tuke.gamestudio.entity")
+@SpringBootApplication
+@EntityScan({"sk.tuke.gamestudio.entity", "sk.tuke.gamestudio.game.sidealama.entity"})
+
 public class GameStudioServer {
     public static void main(String[] args) {
         SpringApplication.run(GameStudioServer.class, args);

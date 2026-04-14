@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Side-a-Lama</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<div th:replace="fragments::header"></div>
+
+<main class="container">
+
+    <section class="hero">
+        <h1 class="game-title">🦙 Side-a-Lama</h1>
+        <p class="subtitle">Push tiles, match three, win points.</p>
+    </section>
+
+    <section class="status-row">
+        <form class="name-form" action="/sidealama/name" method="post">
+            <label for="player-name">Player</label>
+            <input id="player-name" type="text" name="name" th:value="${playerName}" maxlength="24" required/>
+            <button type="submit" class="btn btn-ghost">Save</button>
+        </form>
+
+        <div class="status-pills">
+            <span class="pill">Turn: <strong th:text="${currentPlayer}">Player1</strong></span>
+            <span class="pill">State: <strong th:text="${state}">PLAYING</strong></span>
+        </div>
+    </section>
+
+    <section class="score-row">
+        <div class="score-card">
+            <div class="score-label">Player 1</div>
+            <div class="score-value" th:text="${score1}">500</div>
+        </div>
+
+        <div class="next-tile-card">
+            <div class="score-label">Next</div>
+            <div class="tile next" th:classappend="' ' + ${nextTileClass}" th:text="${nextTile}">?</div>
+        </div>
+
+        <div class="score-card">
+            <div class="score-label">Player 2</div>
+            <div class="score-value" th:text="${score2}">500</div>
+        </div>
+    </section>
+
+    <section class="board-section" th:utext="${@sideaLamaController.getHtmlField()}"></section>
+
+    <div class="game-over" th:if="${state != 'PLAYING'}">
+        <h2 th:if="${state == 'PLAYER1_WIN'}">🏆 Player 1 wins!</h2>
+        <h2 th:if="${state == 'PLAYER2_WIN'}">🏆 Player 2 wins!</h2>
+        <a href="/sidealama/new" class="btn btn-primary">Play again</a>
+    </div>
+
+    <div class="actions">
+        <a href="/sidealama/new" class="btn btn-primary">New Game</a>
+        <a href="/" class="btn btn-ghost">Home</a>
+    </div>
+
+    <section class="panel">
+        <h2>Best Scores</h2>
+        <table class="data-table">
+            <thead>
+            <tr><th>#</th><th>Player</th><th>Points</th><th>Played on</th></tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(scores)}">
+                <td colspan="4" class="empty">No scores yet.</td>
+            </tr>
+            <tr th:each="score, iter : ${scores}">
+                <td th:text="${iter.count}">1</td>
+                <td th:text="${score.player}">player</td>
+                <td class="num" th:text="${score.points}">0</td>
+                <td th:text="${#dates.format(score.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <h2>Rating</h2>
+        <div class="rating-row">
+            <div class="avg-rating">
+                <div class="score-label">Average</div>
+                <div class="avg-value" th:text="${averageRating != null} ? ${averageRating} : '—'">0</div>
+            </div>
+
+            <div class="your-rating">
+                <div class="score-label">Your rating</div>
+                <form action="/sidealama/rating" method="post" class="star-form">
+                    <input type="radio" id="r5" name="rating" value="5" th:checked="${playerRating == 5}"/><label for="r5">★</label>
+                    <input type="radio" id="r4" name="rating" value="4" th:checked="${playerRating == 4}"/><label for="r4">★</label>
+                    <input type="radio" id="r3" name="rating" value="3" th:checked="${playerRating == 3}"/><label for="r3">★</label>
+                    <input type="radio" id="r2" name="rating" value="2" th:checked="${playerRating == 2}"/><label for="r2">★</label>
+                    <input type="radio" id="r1" name="rating" value="1" th:checked="${playerRating == 1}"/><label for="r1">★</label>
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                </form>
+                <div class="your-current" th:if="${playerRating != null and playerRating > 0}">
+                    You rated <strong th:text="${playerRating}">3</strong>/5
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Comments</h2>
+        <form action="/sidealama/comment" method="post" class="comment-form">
+            <input type="text" name="content" placeholder="Your comment…" maxlength="500" required/>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+
+        <ul class="comments-list">
+            <li th:if="${#lists.isEmpty(comments)}" class="empty">No comments yet.</li>
+            <li th:each="comment : ${comments}" class="comment-item">
+                <div class="comment-head">
+                    <span class="comment-author" th:text="${comment.player}">anonymous</span>
+                    <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
+                </div>
+                <div th:text="${comment.comments}">nice game</div>
+            </li>
+        </ul>
+    </section>
+
+</main>
+
+<div th:replace="fragments::footer"></div>
+</body>
+</html>
