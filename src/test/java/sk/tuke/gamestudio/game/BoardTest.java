@@ -1,8 +1,8 @@
 package sk.tuke.gamestudio.game;
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BoardTest {
-/*
     @Test
     public void generateBoardTest(){
         Board board = new Board(5, 5);
@@ -19,5 +19,4 @@ public class BoardTest {
             }
         }
     }
- */
 }

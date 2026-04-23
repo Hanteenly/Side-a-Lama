@@ -1,7 +1,7 @@
 :root {
     --bg: #0f172a;
     --surface: rgba(255, 255, 255, 0.06);
-    --border: rgba(255, 255, 255, 0.12);
+    --border: rgb(255 254 254 / 12%);
     --text: #f1f5f9;
     --text-dim: #94a3b8;
     --text-muted: #64748b;
@@ -27,7 +27,10 @@ body {
     line-height: 1.5;
 }
 
-a { color: inherit; text-decoration: none; }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
 .site-header {
     position: sticky;
@@ -66,7 +69,6 @@ a { color: inherit; text-decoration: none; }
 
 .container {
     max-width: 1000px;
-    margin: 0 auto;
     padding: 24px;
 }
 
@@ -168,7 +170,9 @@ a { color: inherit; text-decoration: none; }
     font-weight: 800;
     margin-top: 2px;
 }
-
+.site-header{
+    color: var(--text-dim);
+}
 .board-section {
     margin: 20px 0;
     display: flex;
@@ -177,6 +181,7 @@ a { color: inherit; text-decoration: none; }
 .board {
     border-collapse: separate;
     border-spacing: 5px;
+
 }
 .board td {
     padding: 0;
@@ -275,7 +280,6 @@ a { color: inherit; text-decoration: none; }
 .btn-sm {
     padding: 7px 14px; font-size: 0.82rem;
 }
-
 
 .actions {
     display: flex;
@@ -434,25 +438,139 @@ a { color: inherit; text-decoration: none; }
     font-size: 0.78rem;
 }
 
-.games-grid {
+.gameName{
+
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #344b65;
+    margin-bottom: 30px;
+}
+
+
+.choose-actions {
+
+}
+
+.choose-actions .block{
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding-top: 10px;
+    border-radius: 12px;
+    background: #0b5c98;
+    background: var(--surface);
+    border: 2px solid #272727;
+
+}
+
+.choose-actions .players{
+    display: flex;
+    padding-right: 7px;
+}
+form {
+    margin: 20px 0;
+}
+
+h3 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+.block input{
+    margin-left: 4px;
+    width: 98%;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+    width: 98%;
+    margin-left: 4px;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-ghost {
+    background-color: transparent;
+    border: 2px solid #3498db;
+    color: #3498db;
+    width: 98%;
+    margin-left: 4px;
+}
+
+.btn-ghost:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 30px 0;
+}
+.games-menu {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
+    line-height: 30px;
     margin-top: 20px;
+    align-content: center;
 }
 .game-card {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 20px;
+    padding: 20px 20px;
+    color: #254498;
+    line-height: 20px;
+    margin-top: 5px;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 10px;
+    background: #0b5c98;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    transition: all 0.2s ease;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin-left: 170px;
+
 }
 .game-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent);
+    transform: translateY(-2px);
+    color: #1884d1;
 }
 .game-card-emoji {
     font-size: 2.4rem;
@@ -462,14 +580,16 @@ a { color: inherit; text-decoration: none; }
 }
 .game-card p {
     margin: 0;
-    color: var(--text-dim);
+    color: white;
     flex: 1;
 }
 .game-card .btn {
     align-self: flex-start;
     margin-top: 6px;
 }
-
+.down{
+    padding: 190px;
+}
 .site-footer {
     margin-top: 40px;
     padding: 18px 24px;

@@ -82,4 +82,12 @@ public class GameState implements Serializable {
                 + ", board_data = " + board_data +
                 '}';
     }
+
+    public void setGameName(String gameName) { this.gameName = gameName; }
+    public void setPlayer1(String player1) { this.player1 = player1; }
+    public void setPlayer2(String player2) { this.player2 = player2; }
+    public void setCurrentPlayer(String currentPlayer) { this.CurrentPlayer = currentPlayer; }
+    public void setScore1(int score1) { this.score1 = score1; }
+    public void setScore2(int score2) { this.score2 = score2; }
+    public void setBoard_data(String board_data) { this.board_data = board_data; }
 }

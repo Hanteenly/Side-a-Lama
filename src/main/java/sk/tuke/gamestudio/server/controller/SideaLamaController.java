@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.game.Direction;
 import sk.tuke.gamestudio.game.Game;
 import sk.tuke.gamestudio.game.Tile;
 import sk.tuke.gamestudio.service.CommentService;
+import sk.tuke.gamestudio.service.GameStateService;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
@@ -34,14 +36,18 @@ public class SideaLamaController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private GameStateService gameStateService;
+
     private Game game = new Game(8, 8);
 
-    private String playerName = "Anonymous";
+    private String player1Name = "player1";
+    private String player2Name = "player2";
+
+    private String gameName;
 
     @GetMapping
-    public String index(@RequestParam(required = false) String dir,
-                        @RequestParam(required = false) Integer index,
-                        Model model) {
+    public String index(@RequestParam(required = false) String dir, @RequestParam(required = false) Integer index,  Model model) {
         if (dir != null && index != null) {
             try {
                 game.randomTile();
@@ -52,10 +58,22 @@ public class SideaLamaController {
         fillModel(model);
         return "sidealama";
     }
+    @GetMapping("/Choose")
+    public String showChoose() {
+        return "choose";
+    }
 
+    @PostMapping("/new")
+    public String startNewGame(@RequestParam String gameName, Model model) {
+        this.game = new Game(4, 4);
+        this.gameName = gameName;
+
+        return "redirect:/sidealama";
+    }
     @PostMapping("/name")
-    public String setName(@RequestParam String name, Model model) {
-        this.playerName = name;
+    public String setName(@RequestParam String name1, String name2, Model model) {
+        this.player1Name = name1;
+        this.player2Name = name2;
         fillModel(model);
         return "sidealama";
     }
@@ -82,6 +100,7 @@ public class SideaLamaController {
         try {
             ratingService.setRating(new Rating("sidealama", "anonymous", rating, new Date()));
         } catch (Exception e) {
+
         }
         fillModel(model);
         return "sidealama";
@@ -107,7 +126,45 @@ public class SideaLamaController {
         model.addAttribute("score1", game.getScore1());
         model.addAttribute("score2", game.getScore2());
         model.addAttribute("state", game.getState());
-        model.addAttribute("playerName", this.playerName);
+        model.addAttribute("player1Name", this.player1Name);
+        model.addAttribute("player2Name", this.player2Name);
+    }
+
+    @PostMapping("/save")
+    public String saveGame(@RequestParam String gameName, Model model) {
+        try {
+            GameState state = new GameState();
+            state.setGameName(gameName);
+            state.setPlayer1(this.player1Name);
+            state.setPlayer2(this.player2Name);
+            state.setCurrentPlayer(game.getCurrentlyPlayer());
+            state.setScore1(game.getScore1());
+            state.setScore2(game.getScore2());
+            state.setBoard_data(game.getBoard().toDataString());
+
+            gameStateService.save(state);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        fillModel(model);
+        return "sidealama";
+    }
+
+    @PostMapping("/load")
+    public String loadGame(@RequestParam String gameName, Model model) {
+        try {
+            GameState state = gameStateService.load(gameName);
+            if (state != null) {
+                this.player1Name = state.getPlayer1();
+                this.player2Name = state.getPlayer2();
+                this.gameName = state.getGameName();
+                this.game.getBoard().loadFromDataString(state.getBoard_data());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        fillModel(model);
+        return "sidealama";
     }
 
     public String getHtmlField() {

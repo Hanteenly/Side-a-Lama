@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameStudio</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<div th:replace="fragments::header"></div>
+
+<main class="container">
+    <h1>Game</h1>
+
+    <section class="choose-actions">
+        <div class = "block">
+            <form action="/sidealama/new" method="post">
+                <h3>Start New Game</h3>
+                <input type="text" name="player" placeholder="Enter Game name" required>
+                <button type="submit" class="btn btn-primary">Start</button>
+            </form>
+        </div>
+
+        <div class = "block">
+            <form action="/sidealama" method="get">
+                <h3>Continue Game</h3>
+                <input type="text" name="game" placeholder="Enter game name" required>
+                <div class = "players">
+                <input type="text" name="player1" placeholder="Name player1" required>
+                <input type="text" name="player2" placeholder="Name player2" required>
+                </div>
+                <button type="submit" class="btn btn-ghost">Continue</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<div th:replace="fragments::footer"></div>
+</body>
+</html>

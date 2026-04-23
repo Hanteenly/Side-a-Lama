@@ -12,14 +12,16 @@
 <main class="container">
 
     <section class="hero">
-        <h1 class="game-title">🦙 Side-a-Lama</h1>
+        <h1 class="game-title">Side-a-Lama</h1>
         <p class="subtitle">Push tiles, match three, win points.</p>
     </section>
 
     <section class="status-row">
         <form class="name-form" action="/sidealama/name" method="post">
-            <label for="player-name">Player</label>
-            <input id="player-name" type="text" name="name" th:value="${playerName}" maxlength="24" required/>
+            <label for="player1-name">Player1</label>
+            <label for="player2-name">Player2</label>
+            <input id="player1-name" type="text" name="name" th:value="${player1Name}" maxlength="24" required/>
+            <input id="player2-name" type="text" name="name" th:value="${player2Name}" maxlength="24" required/>
             <button type="submit" class="btn btn-ghost">Save</button>
         </form>
 
