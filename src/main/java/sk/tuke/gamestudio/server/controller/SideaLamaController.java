@@ -12,6 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.game.Board;
 import sk.tuke.gamestudio.game.Direction;
 import sk.tuke.gamestudio.game.Game;
 import sk.tuke.gamestudio.game.Tile;
@@ -39,10 +40,7 @@ public class SideaLamaController {
     @Autowired
     private GameStateService gameStateService;
 
-    private Game game = new Game(8, 8);
-
-    private String player1Name = "player1";
-    private String player2Name = "player2";
+    private Game game = new Game(4, 4);
 
     private String gameName;
 
@@ -50,8 +48,8 @@ public class SideaLamaController {
     public String index(@RequestParam(required = false) String dir, @RequestParam(required = false) Integer index,  Model model) {
         if (dir != null && index != null) {
             try {
-                game.randomTile();
                 game.playTurn(Direction.valueOf(dir), index);
+                game.updateNextTile();
             } catch (IllegalArgumentException e) {
             }
         }
@@ -64,18 +62,19 @@ public class SideaLamaController {
     }
 
     @PostMapping("/new")
-    public String startNewGame(@RequestParam String gameName, Model model) {
+    public String startNewGame(@RequestParam String gameName, @RequestParam String player1Name, @RequestParam String player2Name, Model model) {
         this.game = new Game(4, 4);
         this.gameName = gameName;
-
+        game.SetPlayer1(player1Name);
+        game.SetPlayer2(player2Name);
         return "redirect:/sidealama";
     }
     @PostMapping("/name")
-    public String setName(@RequestParam String name1, String name2, Model model) {
-        this.player1Name = name1;
-        this.player2Name = name2;
+    public String setName(@RequestParam String player1Name, @RequestParam String player2Name, Model model) {
+        game.SetPlayer1(player1Name);
+        game.SetPlayer2(player2Name);
         fillModel(model);
-        return "sidealama";
+        return "redirect:/sidealama";
     }
     @GetMapping("/new")
     public String newGame(Model model) {
@@ -122,21 +121,33 @@ public class SideaLamaController {
         } catch (Exception e) {
             model.addAttribute("averageRating", 0);
         }
+        try {
+            model.addAttribute("game", gameStateService.load("sidealama"));
+        }catch (Exception e) {
+            model.addAttribute("game", game);
+        }
         model.addAttribute("currentPlayer", game.getCurrentlyPlayer());
         model.addAttribute("score1", game.getScore1());
         model.addAttribute("score2", game.getScore2());
         model.addAttribute("state", game.getState());
-        model.addAttribute("player1Name", this.player1Name);
-        model.addAttribute("player2Name", this.player2Name);
+        model.addAttribute("player1Name", game.getPlayer1());
+        model.addAttribute("player2Name", game.getPlayer2());
+        model.addAttribute("GameSate",this.game);
+        model.addAttribute("nextTile", game.getNextTile().toString());
+        model.addAttribute("gameName", this.gameName);
+
     }
 
     @PostMapping("/save")
-    public String saveGame(@RequestParam String gameName, Model model) {
+    public String saveGame(Model model) {
+        if (this.gameName == null) {
+            return "redirect:/sidealama";
+        }
         try {
             GameState state = new GameState();
-            state.setGameName(gameName);
-            state.setPlayer1(this.player1Name);
-            state.setPlayer2(this.player2Name);
+            state.setGameName(this.gameName);
+            state.setPlayer1(game.getPlayer1());
+            state.setPlayer2(game.getPlayer2());
             state.setCurrentPlayer(game.getCurrentlyPlayer());
             state.setScore1(game.getScore1());
             state.setScore2(game.getScore2());
@@ -155,8 +166,8 @@ public class SideaLamaController {
         try {
             GameState state = gameStateService.load(gameName);
             if (state != null) {
-                this.player1Name = state.getPlayer1();
-                this.player2Name = state.getPlayer2();
+                game.SetPlayer1(state.getPlayer1());
+                game.SetPlayer2(state.getPlayer2());
                 this.gameName = state.getGameName();
                 this.game.getBoard().loadFromDataString(state.getBoard_data());
             }
@@ -164,24 +175,57 @@ public class SideaLamaController {
             e.printStackTrace();
         }
         fillModel(model);
-        return "sidealama";
+        return "redirect:/sidealama";
     }
 
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<table border='1' cellpadding='5'>\n");
-        for (int row = 0; row < game.getBoard().getRows(); row++) {
-            sb.append("<tr>\n");
-            for (int col = 0; col < game.getBoard().getCols(); col++) {
+        int rows = game.getBoard().getRows();
+        int cols = game.getBoard().getCols();
+
+        sb.append("<table class='game-board'>\n");
+
+        sb.append("<tr><td></td>");
+        for (int col = 0; col < cols; col++) {
+            sb.append("<td class='arrow-cell'>");
+            sb.append("<form action='/sidealama' method='get'>");
+            sb.append("<input type='hidden' name='dir' value='TOP'>");
+            sb.append("<input type='hidden' name='index' value='").append(col).append("'>");
+            sb.append("<button type='submit' class='arrow-button'>▼</button>");
+            sb.append("</form>");
+            sb.append("</td>");
+        }
+        sb.append("<td></td></tr>\n");
+
+        for (int row = 0; row < rows; row++) {
+            sb.append("<tr>");
+
+            sb.append("<td class='arrow-cell'>");
+            sb.append("<form action='/sidealama' method='get'>");
+            sb.append("<input type='hidden' name='dir' value='LEFT'>");
+            sb.append("<input type='hidden' name='index' value='").append(row).append("'>");
+            sb.append("<button type='submit' class='arrow-button'>▶</button>");
+            sb.append("</form>");
+            sb.append("</td>");
+
+            for (int col = 0; col < cols; col++) {
                 Tile tile = game.getBoard().getTile(row, col);
-                sb.append("<td>");
-                sb.append(String.format("<a href='/sidealama?dir=%s&index=%d'>", "LEFT", row));
-                sb.append(tile != null ? tile.toString() : "·");
-                sb.append("</a>");
-                sb.append("</td>\n");
+                sb.append("<td class='tile-cell'>");
+                sb.append("<span class='tile'>").append(tile != null ? tile.toString() : "·").append("</span>");
+                sb.append("</td>");
             }
+
+            sb.append("<td class='arrow-cell'>");
+            sb.append("<form action='/sidealama' method='get'>");
+            sb.append("<input type='hidden' name='dir' value='RIGHT'>");
+            sb.append("<input type='hidden' name='index' value='").append(row).append("'>");
+            sb.append("<button type='submit' class='arrow-button'>◀</button>");
+            sb.append("</form>");
+            sb.append("</td>");
+
             sb.append("</tr>\n");
         }
+
         sb.append("</table>\n");
         return sb.toString();
     }

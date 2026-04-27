@@ -9,7 +9,7 @@
 
 <div th:replace="fragments::header"></div>
 
-<main class="container">
+<main class="container g">
 
     <section class="hero">
         <h1 class="game-title">Side-a-Lama</h1>
@@ -17,16 +17,18 @@
     </section>
 
     <section class="status-row">
-        <form class="name-form" action="/sidealama/name" method="post">
+        <form class="name-form" action="/sidealama/save" method="post">
             <label for="player1-name">Player1</label>
+            <input id="player1-name" type="text" name="player1Name" th:value="${player1Name}" maxlength="24" required/>
+
             <label for="player2-name">Player2</label>
-            <input id="player1-name" type="text" name="name" th:value="${player1Name}" maxlength="24" required/>
-            <input id="player2-name" type="text" name="name" th:value="${player2Name}" maxlength="24" required/>
+            <input id="player2-name" type="text" name="player2Name" th:value="${player2Name}" maxlength="24" required/>
             <button type="submit" class="btn btn-ghost">Save</button>
         </form>
 
         <div class="status-pills">
-            <span class="pill">Turn: <strong th:text="${currentPlayer}">Player1</strong></span>
+
+            <span class="pill">Turn: <strong th:text="${currentPlayer}"></strong></span>
             <span class="pill">State: <strong th:text="${state}">PLAYING</strong></span>
         </div>
     </section>
@@ -39,7 +41,7 @@
 
         <div class="next-tile-card">
             <div class="score-label">Next</div>
-            <div class="tile next" th:classappend="' ' + ${nextTileClass}" th:text="${nextTile}">?</div>
+            <div class="tile next" th:text="${nextTile}">?</div>
         </div>
 
         <div class="score-card">
@@ -51,13 +53,13 @@
     <section class="board-section" th:utext="${@sideaLamaController.getHtmlField()}"></section>
 
     <div class="game-over" th:if="${state != 'PLAYING'}">
-        <h2 th:if="${state == 'PLAYER1_WIN'}">🏆 Player 1 wins!</h2>
-        <h2 th:if="${state == 'PLAYER2_WIN'}">🏆 Player 2 wins!</h2>
-        <a href="/sidealama/new" class="btn btn-primary">Play again</a>
+        <h2 th:if="${state == 'PLAYER1_WIN'}" th:value="${player1Name}"> wins!</h2>
+        <h2 th:if="${state == 'PLAYER2_WIN'}" th:value="${player2Name}"> wins!</h2>
+        <a href="/sidealama/new" class="btn btn-primary" >Play again</a>
     </div>
 
     <div class="actions">
-        <a href="/sidealama/new" class="btn btn-primary">New Game</a>
+        <a href="/sidealama/Choose" class="btn btn-ghost">New Game</a>
         <a href="/" class="btn btn-ghost">Home</a>
     </div>
 

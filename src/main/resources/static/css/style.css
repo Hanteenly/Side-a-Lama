@@ -12,16 +12,14 @@
     --font: 'Segoe UI', system-ui, Arial, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
-    font-family: var(--font);
     color: var(--text);
-    background:
-            radial-gradient(800px 400px at 10% -10%, #6366f1 0%, transparent 60%),
-            radial-gradient(800px 400px at 110% 10%, #ec4899 0%, transparent 55%),
-            linear-gradient(135deg, #0f172a, #1e293b);
+    background: linear-gradient( #0f172a, #1e293b);
     background-attachment: fixed;
     min-height: 100vh;
     line-height: 1.5;
@@ -41,12 +39,12 @@ a {
     border-bottom: 1px solid var(--border);
 }
 .header-inner {
-    max-width: 1000px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 14px 24px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+
 }
 .brand {
     font-weight: 700;
@@ -69,7 +67,7 @@ a {
 
 .container {
     max-width: 1000px;
-    padding: 24px;
+    padding: 240px;
 }
 
 .hero { text-align: center;
@@ -113,20 +111,30 @@ a {
     border: 1px solid var(--border);
     border-radius: 999px;
     padding: 4px 6px 4px 14px;
+    width: 60%;
+}
+
+.name-form button{
+    position: relative;
+    z-index: 2;
+    left: -50px;
 }
 .name-form label {
     color: var(--text-dim);
     font-size: 0.85rem;
     font-weight: 600;
+    position: relative;
+    z-index: 1;
 }
 .name-form input {
     background: transparent;
-    border: none;
     outline: none;
     color: var(--text);
-    padding: 6px 4px;
-    width: 130px;
+    padding-right: 15px;
+    position: relative;
+    z-index: 1;
 }
+
 .status-pills {
     display: flex; gap: 8px;
     flex-wrap: wrap;
@@ -262,6 +270,8 @@ a {
     transition: all 0.15s ease;
     background: var(--surface);
     color: var(--text);
+
+
 }
 .btn:hover {
     transform: translateY(-1px);
@@ -269,11 +279,13 @@ a {
 .btn-primary {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
+
 }
 .btn-ghost {
     background: transparent;
     border: 1px solid var(--border);
 }
+
 .btn-ghost:hover {
     background: var(--surface);
 }
@@ -283,9 +295,9 @@ a {
 
 .actions {
     display: flex;
-    gap: 10px;
     justify-content: center;
-    margin: 18px 0;
+    margin-right: 120px;
+    text-align: center;
 }
 
 .game-over {
@@ -300,7 +312,10 @@ a {
 .game-over h2 {
     margin: 0 0 12px; color: var(--gold);
 }
-
+.game-over a {
+    position: relative;
+    right: 65px;
+}
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -391,11 +406,25 @@ a {
 .your-current strong {
     color: var(--gold);
 }
-
-.comment-form {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
+.arrow-button {
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.arrow-button:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+.tile-cell {
+    text-align: center;
+    padding: 8px;
+}
+.arrow-cell {
+    text-align: center;
 }
 .comment-form input {
     flex: 1;
@@ -443,7 +472,7 @@ a {
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
+
     color: #333;
     line-height: 1.6;
     margin: 0;
@@ -453,6 +482,9 @@ body {
     max-width: 600px;
     margin: 40px auto;
     padding: 20px;
+}
+.g{
+    max-width: 900px;
 }
 
 h1 {
@@ -473,7 +505,7 @@ h1 {
     background: #0b5c98;
     background: var(--surface);
     border: 2px solid #272727;
-
+    margin-top: 10px;
 }
 
 .choose-actions .players{
@@ -484,13 +516,14 @@ form {
     margin: 20px 0;
 }
 
+
 h3 {
     margin-top: 0;
     color: #34495e;
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 100px;
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ddd;
@@ -517,20 +550,16 @@ input[type="text"] {
 .btn-primary {
     background-color: #3498db;
     color: white;
-    width: 98%;
-    margin-left: 4px;
-}
-
-.btn-primary:hover {
-    background-color: #2980b9;
+    width: 50%;
+    margin-left: 130px;
 }
 
 .btn-ghost {
     background-color: transparent;
     border: 2px solid #3498db;
     color: #3498db;
-    width: 98%;
-    margin-left: 4px;
+    width: 50%;
+    margin-left: 130px;
 }
 
 .btn-ghost:hover {
@@ -589,6 +618,9 @@ hr {
 }
 .down{
     padding: 190px;
+}
+.down2{
+    padding: 52px;
 }
 .site-footer {
     margin-top: 40px;
