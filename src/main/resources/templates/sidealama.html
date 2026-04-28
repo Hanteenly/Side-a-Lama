@@ -50,12 +50,13 @@
         </div>
     </section>
 
-    <section class="board-section" th:utext="${@sideaLamaController.getHtmlField()}"></section>
+    <section class="board-section" id="board-section"></section>
 
-    <div class="game-over" th:if="${state != 'PLAYING'}">
-        <h2 th:if="${state == 'PLAYER1_WIN'}" th:value="${player1Name}"> wins!</h2>
-        <h2 th:if="${state == 'PLAYER2_WIN'}" th:value="${player2Name}"> wins!</h2>
-        <a href="/sidealama/new" class="btn btn-primary" >Play again</a>
+    <div class="game-over-overlay">
+        <div class="game-over-box">
+            <h2 id="winner-text"></h2>
+            <a href="/sidealama/Choose" class="btn btn-play">Play again</a>
+        </div>
     </div>
 
     <div class="actions">
@@ -108,24 +109,103 @@
         </div>
     </section>
 
-    <section class="panel">
-        <h2>Comments</h2>
+    <section class="panel" id="comments">
+        <div class="panel-header">
+            <h2>Comments</h2>
+        </div>
+        <div class="panel-body">
         <form action="/sidealama/comment" method="post" class="comment-form">
             <input type="text" name="content" placeholder="Your comment…" maxlength="500" required/>
             <button type="submit" class="btn btn-primary">Post</button>
         </form>
-
-        <ul class="comments-list">
+            <button class="btn btn-ghost btn-sm" onclick="toggleComments()" id="toggle-btn">▲</button>
+        </div>
+        <ul class="comments-list" id="comments-list">
             <li th:if="${#lists.isEmpty(comments)}" class="empty">No comments yet.</li>
             <li th:each="comment : ${comments}" class="comment-item">
                 <div class="comment-head">
                     <span class="comment-author" th:text="${comment.player}">anonymous</span>
                     <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
                 </div>
-                <div th:text="${comment.comments}">nice game</div>
+                <div class = "comment" th:text="${comment.comments}"></div>
             </li>
         </ul>
     </section>
+
+    <script>
+        async function makeMove(dir, index) {
+            const res = await fetch(`/sidealama/move?dir=${dir}&index=${index}`);
+            const data = await res.json();
+            updateUI(data);
+        }
+
+        async function loadState() {
+            const res = await fetch('/sidealama/state');
+            const data = await res.json();
+            updateUI(data);
+        }
+
+        function updateUI(data) {
+            document.querySelector('.score-card:first-child .score-value').textContent = data.score1;
+            document.querySelector('.score-card:last-child .score-value').textContent = data.score2;
+            document.querySelector('.pill strong:first-child') &&
+            (document.querySelectorAll('.pill strong')[0].textContent = data.currentPlayer);
+            document.querySelector('.tile.next').textContent = data.nextTile;
+
+            renderBoard(data.board);
+
+            if (data.state !== 'PLAYING') {
+                document.querySelector('.game-over-overlay').style.display = 'flex';
+            }
+        }
+
+        function renderBoard(board) {
+            const section = document.getElementById('board-section');
+            const rows = board.length;
+            const cols = board[0].length;
+
+            let html = "<table class='game-board'><tr><td></td>";
+            for (let col = 0; col < cols; col++) {
+                html += `<td class='arrow-cell'>
+            <button class='arrow-button' onclick="makeMove('TOP', ${col})">▼</button>
+        </td>`;
+            }
+            html += "<td></td></tr>";
+
+            for (let row = 0; row < rows; row++) {
+                html += "<tr>";
+                html += `<td class='arrow-cell'>
+            <button class='arrow-button' onclick="makeMove('LEFT', ${row})">▶</button>
+        </td>`;
+                for (let col = 0; col < cols; col++) {
+                    html += `<td class='tile-cell'><span class='tile'>${board[row][col]}</span></td>`;
+                }
+                html += `<td class='arrow-cell'>
+            <button class='arrow-button' onclick="makeMove('RIGHT', ${row})">◀</button>
+        </td>`;
+                html += "</tr>";
+            }
+            html += "</table>";
+            section.innerHTML = html;
+        }
+
+        window.addEventListener('load', loadState);
+
+        document.querySelectorAll('.arrow-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sessionStorage.setItem('scrollY', window.scrollY);
+            });
+        });
+
+        window.addEventListener('load', () => {
+            const y = sessionStorage.getItem('scrollY');
+            if (y !== null) {
+                window.scrollTo(0, parseInt(y));
+                sessionStorage.removeItem('scrollY');
+            }
+        });
+
+    </script>
 
 </main>
 

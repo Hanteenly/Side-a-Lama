@@ -4,15 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.game.Board;
 import sk.tuke.gamestudio.game.Direction;
 import sk.tuke.gamestudio.game.Game;
 import sk.tuke.gamestudio.game.Tile;
@@ -21,7 +17,7 @@ import sk.tuke.gamestudio.service.GameStateService;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
-import java.util.Date;
+import java.util.*;
 
 @Controller
 @RequestMapping("/sidealama")
@@ -87,17 +83,16 @@ public class SideaLamaController {
     @PostMapping("/comment")
     public String addComment(@RequestParam String content, Model model) {
         try {
-            commentService.addComment(new Comment("sidealama", "anonymous", content, new Date()));
+            commentService.addComment(new Comment("sidealama", game.getPlayer1(), content, new Date()));
         } catch (Exception e) {
         }
-        fillModel(model);
-        return "sidealama";
+        return "redirect:/sidealama#comments";
     }
 
     @PostMapping("/rating")
     public String addRating(@RequestParam int rating, Model model) {
         try {
-            ratingService.setRating(new Rating("sidealama", "anonymous", rating, new Date()));
+            ratingService.setRating(new Rating("sidealama", game.getPlayer1(), rating, new Date()));
         } catch (Exception e) {
 
         }
@@ -121,10 +116,11 @@ public class SideaLamaController {
         } catch (Exception e) {
             model.addAttribute("averageRating", 0);
         }
+
         try {
-            model.addAttribute("game", gameStateService.load("sidealama"));
-        }catch (Exception e) {
-            model.addAttribute("game", game);
+            model.addAttribute("playerRating", ratingService.getRating("sidealama", game.getPlayer1()));
+        } catch (Exception e) {
+            model.addAttribute("playerRating", 0);
         }
         model.addAttribute("currentPlayer", game.getCurrentlyPlayer());
         model.addAttribute("score1", game.getScore1());
@@ -166,18 +162,54 @@ public class SideaLamaController {
         try {
             GameState state = gameStateService.load(gameName);
             if (state != null) {
+                this.game = new Game(4, 4);
                 game.SetPlayer1(state.getPlayer1());
                 game.SetPlayer2(state.getPlayer2());
+                game.setScores(state.getScore1(), state.getScore2());
                 this.gameName = state.getGameName();
                 this.game.getBoard().loadFromDataString(state.getBoard_data());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        fillModel(model);
         return "redirect:/sidealama";
     }
 
+    @GetMapping("/state")
+    @ResponseBody
+    public Map<String, Object> getState() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("score1", game.getScore1());
+        map.put("score2", game.getScore2());
+        map.put("currentPlayer", game.getCurrentlyPlayer());
+        map.put("state", game.getState().name());
+        map.put("nextTile", game.getNextTile().toString());
+        map.put("board", getBoardData());
+        return map;
+    }
+
+    @GetMapping("/move")
+    @ResponseBody
+    public Map<String, Object> move(@RequestParam String dir, @RequestParam int index) {
+        try {
+            game.playTurn(Direction.valueOf(dir), index);
+            game.updateNextTile();
+        } catch (IllegalArgumentException e) {}
+        return getState();
+    }
+
+    private List<List<String>> getBoardData() {
+        List<List<String>> rows = new ArrayList<>();
+        for (int r = 0; r < game.getBoard().getRows(); r++) {
+            List<String> row = new ArrayList<>();
+            for (int c = 0; c < game.getBoard().getCols(); c++) {
+                Tile t = game.getBoard().getTile(r, c);
+                row.add(t != null ? t.toString() : "·");
+            }
+            rows.add(row);
+        }
+        return rows;
+    }
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder();
         int rows = game.getBoard().getRows();

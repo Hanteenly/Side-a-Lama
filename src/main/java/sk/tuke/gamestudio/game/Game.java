@@ -20,8 +20,8 @@ public class Game {
 
         this.nextTile = board.randomTile();
 
-        player1 = new Player(player1Name, 500);
-        player2 = new Player(player2Name, 500);
+        player1 = new Player(player1Name, 50);
+        player2 = new Player(player2Name, 50);
         currentPlayer = player1;
 
         this.state = State.PLAYING;

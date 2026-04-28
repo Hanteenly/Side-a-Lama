@@ -18,7 +18,15 @@ public class GameStateServiceJPA implements GameStateService {
 
     @Override
     public void save(GameState state) throws GameStateException {
-        entityManager.persist(state);
+        List<GameState> existing = entityManager.createNamedQuery("GameState.load")
+                .setParameter("gameName", state.getGameName())
+                .getResultList();
+        if (!existing.isEmpty()) {
+            state.setIdent(existing.get(0).getIdent());
+            entityManager.merge(state);
+        } else {
+            entityManager.persist(state);
+        }
     }
 
     @Override

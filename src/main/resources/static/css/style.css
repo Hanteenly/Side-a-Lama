@@ -32,7 +32,7 @@ a {
 
 .site-header {
     position: sticky;
-    top: 0;
+    top: -15px;
     z-index: 10;
     background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(10px);
@@ -93,8 +93,11 @@ a {
 .panel h2 {
     margin: 0 0 14px;
     font-size: 1.2rem;
+    color: #4e4e4e;
 }
-
+.comment{
+    color: #cacaca;
+}
 .status-row {
     display: flex;
     flex-wrap: wrap;
@@ -177,6 +180,7 @@ a {
     font-size: 2rem;
     font-weight: 800;
     margin-top: 2px;
+    color: #3c3b3b;
 }
 .site-header{
     color: var(--text-dim);
@@ -438,6 +442,11 @@ a {
 .comment-form input:focus {
     border-color: var(--accent);
 }
+.comment-form button{
+    margin-left: 3px;
+    height: 40px;
+    margin-top: 10px;
+}
 .comments-list {
     list-style: none;
     margin: 0;
@@ -466,9 +475,46 @@ a {
     color: var(--text-muted);
     font-size: 0.78rem;
 }
-
+.comment-form{
+    display: flex;
+}
+.panel-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.btn.btn-ghost.btn-sm{
+    width: 60px;
+}
 .gameName{
 
+}
+.game-over-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.game-over-box {
+    background: var(--surface, #1e2130);
+    border: 2px solid #7c5cbf;
+    border-radius: 16px;
+    padding: 48px 64px;
+    text-align: center;
+}
+ .a{
+    margin-right: 100px;
+}
+.game-over-box h2 {
+    font-size: 2rem;
+    color: white;
+    margin: 0;
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -553,7 +599,13 @@ input[type="text"] {
     width: 50%;
     margin-left: 130px;
 }
-
+.btn .btn-play{
+    background-color: #3498db;
+    color: white;
+    width: 50%;
+    margin-left: -5px;
+    margin-top: 300px;
+}
 .btn-ghost {
     background-color: transparent;
     border: 2px solid #3498db;
@@ -566,7 +618,9 @@ input[type="text"] {
     background-color: #3498db;
     color: white;
 }
-
+.game-over-overlay {
+    display: none;
+}
 hr {
     border: 0;
     border-top: 1px solid #eee;
