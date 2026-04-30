@@ -18,13 +18,15 @@
 
     <section class="status-row">
         <form class="name-form" action="/sidealama/save" method="post">
-            <label for="player1-name">Player1</label>
-            <input id="player1-name" type="text" name="player1Name" th:value="${player1Name}" maxlength="24" required/>
+            <label>Player1: </label>
+            <span th:text="${player1Name}">Player1</span>
 
-            <label for="player2-name">Player2</label>
-            <input id="player2-name" type="text" name="player2Name" th:value="${player2Name}" maxlength="24" required/>
+            <label class="player2">Player2: </label>
+            <span th:text="${player2Name}">Player2</span>
+
             <button type="submit" class="btn btn-ghost">Save</button>
         </form>
+
 
         <div class="status-pills">
 
@@ -94,13 +96,13 @@
 
             <div class="your-rating">
                 <div class="score-label">Your rating</div>
-                <form action="/sidealama/rating" method="post" class="star-form">
+                <form action="/sidealama/rating" method="post" class="star-form" id="rating-form">
                     <input type="radio" id="r5" name="rating" value="5" th:checked="${playerRating == 5}"/><label for="r5">★</label>
                     <input type="radio" id="r4" name="rating" value="4" th:checked="${playerRating == 4}"/><label for="r4">★</label>
                     <input type="radio" id="r3" name="rating" value="3" th:checked="${playerRating == 3}"/><label for="r3">★</label>
                     <input type="radio" id="r2" name="rating" value="2" th:checked="${playerRating == 2}"/><label for="r2">★</label>
                     <input type="radio" id="r1" name="rating" value="1" th:checked="${playerRating == 1}"/><label for="r1">★</label>
-                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
                 </form>
                 <div class="your-current" th:if="${playerRating != null and playerRating > 0}">
                     You rated <strong th:text="${playerRating}">3</strong>/5
@@ -115,7 +117,7 @@
         </div>
         <div class="panel-body">
         <form action="/sidealama/comment" method="post" class="comment-form">
-            <input type="text" name="content" placeholder="Your comment…" maxlength="500" required/>
+            <input type="text" name="content" class="post" maxlength="65" placeholder="Your comment…" required/>
             <button type="submit" class="btn btn-primary">Post</button>
         </form>
             <button class="btn btn-ghost btn-sm" onclick="toggleComments()" id="toggle-btn">▲</button>
@@ -123,11 +125,22 @@
         <ul class="comments-list" id="comments-list">
             <li th:if="${#lists.isEmpty(comments)}" class="empty">No comments yet.</li>
             <li th:each="comment : ${comments}" class="comment-item">
+                <div class = "comment-stars-wrapper">
+                <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
+                    <span class = "true-star" th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
+                </span>
+                <span class = "comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
+                    <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
+                </span>
+                </div>
                 <div class="comment-head">
                     <span class="comment-author" th:text="${comment.player}">anonymous</span>
+
                     <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
                 </div>
+
                 <div class = "comment" th:text="${comment.comments}"></div>
+
             </li>
         </ul>
     </section>
@@ -189,6 +202,17 @@
             section.innerHTML = html;
         }
 
+        function toggleComments() {
+            const list = document.getElementById('comments-list');
+            const btn = document.getElementById('toggle-btn');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                btn.textContent = '▲';
+            } else {
+                list.style.display = 'none';
+                btn.textContent = '▼';
+            }
+        }
         window.addEventListener('load', loadState);
 
         document.querySelectorAll('.arrow-button').forEach(btn => {
@@ -204,7 +228,15 @@
                 sessionStorage.removeItem('scrollY');
             }
         });
-
+        document.querySelectorAll('#rating-form input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                fetch('/sidealama/rating', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `rating=${radio.value}`
+                });
+            });
+        });
     </script>
 
 </main>

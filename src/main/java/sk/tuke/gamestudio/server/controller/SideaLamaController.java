@@ -106,11 +106,7 @@ public class SideaLamaController {
         } catch (Exception e) {
             model.addAttribute("scores", java.util.Collections.emptyList());
         }
-        try {
-            model.addAttribute("comments", commentService.getComments("sidealama"));
-        } catch (Exception e) {
-            model.addAttribute("comments", java.util.Collections.emptyList());
-        }
+        
         try {
             model.addAttribute("averageRating", ratingService.getAverageRating("sidealama"));
         } catch (Exception e) {
@@ -121,6 +117,24 @@ public class SideaLamaController {
             model.addAttribute("playerRating", ratingService.getRating("sidealama", game.getPlayer1()));
         } catch (Exception e) {
             model.addAttribute("playerRating", 0);
+        }
+        try {
+            List<Comment> comments = commentService.getComments("sidealama");
+            model.addAttribute("comments", comments);
+
+            Map<String, Integer> commentRatings = new HashMap<>();
+            for (Comment c : comments) {
+                try {
+                    int r = ratingService.getRating("sidealama", c.getPlayer());
+                    commentRatings.put(c.getPlayer(), r);
+                } catch (Exception e) {
+                    commentRatings.put(c.getPlayer(), 0);
+                }
+            }
+            model.addAttribute("commentRatings", commentRatings);
+        } catch (Exception e) {
+            model.addAttribute("comments", java.util.Collections.emptyList());
+            model.addAttribute("commentRatings", java.util.Collections.emptyMap());
         }
         model.addAttribute("currentPlayer", game.getCurrentlyPlayer());
         model.addAttribute("score1", game.getScore1());

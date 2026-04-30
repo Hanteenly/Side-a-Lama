@@ -2,24 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Side a Lama</title>
+    <title>Side-a-Lama</title>
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
 
 <div th:replace="fragments::header"></div>
 
-<main class="container">
-    <h1>Menu</h1>
-    <section class="game-menu">
-            <a class="game-card" href="/sidealama/Choose">play</a>
-            <a class="game-card" >comments</a>
-            <a class="game-card">score</a>
+<main class="container menu-page">
 
+    <section class="menu-hero">
+        <div class="menu-emoji">🦙</div>
+        <h1 class="menu-title">Side-a-Lama</h1>
+        <p class="menu-sub">Push tiles · Match three · Win points</p>
     </section>
+
+    <section class="menu-cards">
+        <a class="menu-card primary" href="/sidealama/Choose">
+            <span class="menu-card-icon">🎮</span>
+            <div>
+                <div class="menu-card-title">Play</div>
+                <div class="menu-card-desc">Start or continue a game</div>
+            </div>
+            <span class="menu-card-arrow">→</span>
+        </a>
+
+        <a class="menu-card" href="/sidealama#comments">
+            <span class="menu-card-icon">💬</span>
+            <div>
+                <div class="menu-card-title">Comments</div>
+                <div class="menu-card-desc">See what others think</div>
+            </div>
+            <span class="menu-card-arrow">→</span>
+        </a>
+
+        <a class="menu-card" href="/sidealama#scores">
+            <span class="menu-card-icon">🏆</span>
+            <div>
+                <div class="menu-card-title">Top Scores</div>
+                <div class="menu-card-desc">Best players leaderboard</div>
+            </div>
+            <span class="menu-card-arrow">→</span>
+        </a>
+    </section>
+
 </main>
-<div class = "down">
-</div>
+<div class = "down"></div>
 <div th:replace="fragments::footer"></div>
 </body>
 </html>
