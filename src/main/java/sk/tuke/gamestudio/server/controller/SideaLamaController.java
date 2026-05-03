@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Rating;
@@ -56,7 +57,11 @@ public class SideaLamaController {
     public String showChoose() {
         return "choose";
     }
-
+    @GetMapping("/Comment")
+    public String showComment(Model model) {
+        fillModel(model);
+        return "comment";
+    }
     @PostMapping("/new")
     public String startNewGame(@RequestParam String gameName, @RequestParam String player1Name, @RequestParam String player2Name, Model model) {
         this.game = new Game(4, 4);
@@ -172,7 +177,7 @@ public class SideaLamaController {
     }
 
     @PostMapping("/load")
-    public String loadGame(@RequestParam String gameName, Model model) {
+    public String loadGame(@RequestParam String gameName, Model model, RedirectAttributes redirectAttributes) {
         try {
             GameState state = gameStateService.load(gameName);
             if (state != null) {
@@ -182,11 +187,16 @@ public class SideaLamaController {
                 game.setScores(state.getScore1(), state.getScore2());
                 this.gameName = state.getGameName();
                 this.game.getBoard().loadFromDataString(state.getBoard_data());
+                return "redirect:/sidealama";
+            } else {
+                redirectAttributes.addFlashAttribute("error",
+                        "Game \"" + gameName + "\" not found!");
+                return "redirect:/sidealama/Choose";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to load game.");
+            return "redirect:/sidealama/Choose";
         }
-        return "redirect:/sidealama";
     }
 
     @GetMapping("/state")

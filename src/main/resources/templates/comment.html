@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Side-a-Lama — Comments</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<div th:replace="fragments::header"></div>
+
+<main class="container menu-page">
+
+    <section class="menu-hero">
+        <div class="menu-emoji">💬</div>
+        <h1 class="menu-title">Comments</h1>
+        <p class="menu-sub">See what players think about Side-a-Lama</p>
+    </section>
+
+    <section class="comments-page-panel">
+
+        <div class="comments-stats">
+            <div class="stat-chip">
+                <span class="stat-icon">📝</span>
+                <span th:text="${#lists.size(comments)} + ' comments'">0 comments</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-icon">⭐</span>
+                <span th:text="'Avg rating: ' + ${averageRating} + '/5'">Avg rating: 0/5</span>
+            </div>
+        </div>
+
+        <ul class="comments-list-page">
+            <li th:if="${#lists.isEmpty(comments)}" class="empty-page">
+                <span style="font-size:3rem">🦙</span>
+                <p>No comments yet. Be the first!</p>
+            </li>
+
+            <li th:each="comment : ${comments}" class="comment-card">
+                <div class="comment-card-left">
+                    <div class="comment-avatar" th:text="${#strings.substring(comment.player, 0, 1).toUpperCase()}">A</div>
+                </div>
+                <div class="comment-card-right">
+                    <div class="comment-card-head">
+                        <span class="comment-author" th:text="${comment.player}">anonymous</span>
+                        <div class="comment-stars-wrapper">
+                            <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
+                                <span th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
+                            </span>
+                            <span class="comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
+                                <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
+                            </span>
+                        </div>
+                        <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
+                    </div>
+                    <div class="comment comment-text" th:text="${comment.comments}"></div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="comment-page-actions">
+            <a href="/sidealama/Choose" class="btn btn-primary">Play & Comment</a>
+            <a href="/" class="btn btn-ghost">Home</a>
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="fragments::footer"></div>
+</body>
+</html>

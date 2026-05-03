@@ -2,42 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GameStudio</title>
+    <title>Side-a-Lama</title>
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
 
 <div th:replace="fragments::header"></div>
 
-<main class="container">
-    <h1>Game</h1>
+<main class="container menu-page">
 
-    <section class="choose-actions">
-        <div class = "block">
-            <form action="/sidealama/new" method="post">
-                <h3>Start New Game</h3>
-                <input type="text" name="gameName" placeholder="Enter Game name" required>
-                <div class = "players">
-                    <input type="text" name="player1Name" placeholder="Main: Name player1" required>
-                    <input type="text" name="player2Name" placeholder="Name player2" required>
-                </div>
-                <button type="submit" class="btn btn-primary s">Start</button>
-            </form>
-        </div>
-
-        <div class = "block">
-            <form action="/sidealama/load" method="post">
-                <h3>Continue Game</h3>
-                <input type="text" name="gameName" placeholder="Enter game name" required>
-                <button type="submit" class="btn btn-ghost">Continue</button>
-            </form>
-        </div>
+    <section class="menu-hero">
+        <div class="menu-emoji">🎮</div>
+        <h1 class="menu-title">Side-a-Lama</h1>
+        <p class="menu-sub">Start a new battle or continue where you left off</p>
     </section>
+
+    <div th:if="${error}" class="error-banner">
+        ⚠️ <span th:text="${error}"></span>
+    </div>
+
+    <section class="choose-grid">
+
+        <div class="choose-card">
+            <div class="choose-card-header">
+                <span class="choose-icon">✨</span>
+                <h2>New Game</h2>
+            </div>
+            <form action="/sidealama/new" method="post" class="choose-form">
+                <div class="field-group">
+                    <label>Game name</label>
+                    <input type="text" name="gameName" placeholder="e.g. EpicBattle" maxlength="20" required/>
+                </div>
+                <div class="field-group">
+                    <label>Player 1</label>
+                    <input type="text" name="player1Name" placeholder="Your name" maxlength="15" required/>
+                </div>
+                <div class="field-group">
+                    <label>Player 2</label>
+                    <input type="text" name="player2Name" placeholder="Opponent name" maxlength="15" required/>
+                </div>
+                <button type="submit" class="btn btn-primary choose-btn">Start Game →</button>
+            </form>
+        </div>
+
+        <div class="choose-card">
+            <div class="choose-card-header">
+                <span class="choose-icon">📂</span>
+                <h2>Continue</h2>
+            </div>
+            <form action="/sidealama/load" method="post" class="choose-form">
+                <div class="field-group">
+                    <label>Game name</label>
+                    <input type="text" name="gameName" placeholder="Enter saved game name" maxlength="20" required/>
+                </div>
+                <button type="submit" class="btn btn-ghost choose-btn">Continue →</button>
+            </form>
+        </div>
+
+    </section>
+
 </main>
 
-<div class = "down2">
-
-</div>
 <div th:replace="fragments::footer"></div>
 </body>
 </html>

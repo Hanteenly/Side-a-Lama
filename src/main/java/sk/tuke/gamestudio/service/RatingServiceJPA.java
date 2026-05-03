@@ -14,10 +14,6 @@ import java.util.List;
 public class RatingServiceJPA implements RatingService {
     @PersistenceContext
     private EntityManager entityManager;
-    @Override
-    public void setRating(Rating rating) throws RatingException {
-        entityManager.persist(rating);
-    }
 
     @Override
     public List<Rating> getAllRatings() throws RatingException {
@@ -25,16 +21,28 @@ public class RatingServiceJPA implements RatingService {
     }
 
     @Override
+    public void setRating(Rating rating) throws RatingException {
+        List<Rating> existing = entityManager.createNamedQuery("Rating.getRating")
+                .setParameter("game", rating.getGame())
+                .setParameter("player", rating.getPlayer())
+                .getResultList();
+        if (!existing.isEmpty()) {
+            existing.get(0).setRating(rating.getRating());
+            entityManager.merge(existing.get(0));
+        } else {
+            entityManager.persist(rating);
+        }
+    }
+
+    @Override
     public int getAverageRating(String game) throws RatingException {
         Double avg = (Double) entityManager.createNamedQuery("Rating.getAverageRating")
                 .setParameter("game", game)
                 .getSingleResult();
-
-        if(avg != null){
-            return avg.intValue();
-        }else {
-            return 0;
+        if (avg != null) {
+            return (int) Math.round(avg); // ← округлення замість обрізання
         }
+        return 0;
     }
 
     @Override
