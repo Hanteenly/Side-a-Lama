@@ -37,7 +37,7 @@
 
     <section class="score-row">
         <div class="score-card">
-            <div class="score-label">Player 1</div>
+            <div class="score-label" th:text="${player1Name}">Player 1</div>
             <div class="score-value" th:text="${score1}">500</div>
         </div>
 
@@ -47,7 +47,7 @@
         </div>
 
         <div class="score-card">
-            <div class="score-label">Player 2</div>
+            <div class="score-label" th:text="${player2Name}" >Player 2</div>
             <div class="score-value" th:text="${score2}">500</div>
         </div>
     </section>
@@ -56,7 +56,10 @@
 
     <div class="game-over-overlay">
         <div class="game-over-box">
-            <h2 id="winner-text"></h2>
+            <div class="game-over-message">
+                <h2 th:text="${currentPlayer}"> </h2>
+                <h2>. won! 🎉</h2>
+            </div>
             <a href="/sidealama/Choose" class="btn btn-play">Play again</a>
         </div>
     </div>
@@ -65,26 +68,7 @@
         <a href="/sidealama/Choose" class="btn btn-ghost">New Game</a>
         <a href="/" class="btn btn-ghost">Home</a>
     </div>
-
-    <section class="panel">
-        <h2>Best Scores</h2>
-        <table class="data-table">
-            <thead>
-            <tr><th>#</th><th>Player</th><th>Points</th><th>Played on</th></tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(scores)}">
-                <td colspan="4" class="empty">No scores yet.</td>
-            </tr>
-            <tr th:each="score, iter : ${scores}">
-                <td th:text="${iter.count}">1</td>
-                <td th:text="${score.player}">player</td>
-                <td class="num" th:text="${score.points}">0</td>
-                <td th:text="${#dates.format(score.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+    
 
     <section class="panel">
         <h2>Rating</h2>
@@ -116,10 +100,10 @@
             <h2>Comments</h2>
         </div>
         <div class="panel-body">
-        <form action="/sidealama/comment" method="post" class="comment-form">
-            <input type="text" name="content" class="post" maxlength="65" placeholder="Your comment…" required/>
-            <button type="submit" class="btn btn-primary">Post</button>
-        </form>
+            <form action="/sidealama/comment" method="post" class="comment-form">
+                <input type="text" name="content" class="post" maxlength="65" placeholder="Your comment…" required/>
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
             <button class="btn btn-ghost btn-sm" onclick="toggleComments()" id="toggle-btn">▲</button>
         </div>
         <ul class="comments-list" id="comments-list">

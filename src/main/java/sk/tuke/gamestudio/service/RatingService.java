@@ -7,7 +7,7 @@ import java.util.List;
 public interface RatingService {
     void setRating(Rating rating) throws RatingException;
     List<Rating> getAllRatings();
-    int getAverageRating(String game) throws RatingException;
+    double getAverageRating(String game) throws RatingException;
     int getRating(String game, String player) throws RatingException;
     void reset() throws RatingException;
 }

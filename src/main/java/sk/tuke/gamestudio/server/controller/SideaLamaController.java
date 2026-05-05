@@ -10,8 +10,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.Direction;
 import sk.tuke.gamestudio.game.Game;
+import sk.tuke.gamestudio.game.State;
 import sk.tuke.gamestudio.game.Tile;
 import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.GameStateService;
@@ -57,10 +59,17 @@ public class SideaLamaController {
     public String showChoose() {
         return "choose";
     }
+
     @GetMapping("/Comment")
     public String showComment(Model model) {
         fillModel(model);
         return "comment";
+    }
+
+    @GetMapping("/Top-score")
+    public String showRatings(Model model) {
+        fillModel(model);
+        return "top-score";
     }
     @PostMapping("/new")
     public String startNewGame(@RequestParam String gameName, @RequestParam String player1Name, @RequestParam String player2Name, Model model) {
@@ -102,7 +111,7 @@ public class SideaLamaController {
 
         }
         fillModel(model);
-        return "sidealama";
+        return "redirect:/sidealama";
     }
 
     private void fillModel(Model model) {
@@ -115,7 +124,7 @@ public class SideaLamaController {
         try {
             model.addAttribute("averageRating", ratingService.getAverageRating("sidealama"));
         } catch (Exception e) {
-            model.addAttribute("averageRating", 0);
+            model.addAttribute("averageRating", 0.0);
         }
 
         try {
@@ -219,6 +228,19 @@ public class SideaLamaController {
             game.playTurn(Direction.valueOf(dir), index);
             game.updateNextTile();
         } catch (IllegalArgumentException e) {}
+        if (game.getState() == State.PLAYER1_WIN) {
+            try {
+                scoreService.addScore(new Score("sidealama", game.getPlayer1(), game.getScore1(), new Date()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (game.getState() == State.PLAYER2_WIN) {
+            try {
+                scoreService.addScore(new Score("sidealama", game.getPlayer2(), game.getScore2(), new Date()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return getState();
     }
 

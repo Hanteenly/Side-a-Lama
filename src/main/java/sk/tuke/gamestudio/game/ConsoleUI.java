@@ -212,7 +212,7 @@ public class ConsoleUI {
     private void showRatings() {
         System.out.println("\n--- RATING ---");
         try {
-            int avg = ratingService.getAverageRating("side-a-lama");
+            double avg = ratingService.getAverageRating("side-a-lama");
             if (avg > 0) {
                 System.out.print("Average rating: " + avg + " / 5 ");
                 for (int i = 0; i < avg; i++) System.out.print("⭐");

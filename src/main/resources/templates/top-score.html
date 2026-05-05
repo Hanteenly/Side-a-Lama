@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Side-a-Lama</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<div th:replace="fragments::header"></div>
+
+<main class="container rating-page">
+    <section class="menu-hero">
+        <div class="menu-emoji">🏆</div>
+        <h1 class="menu-title">Rating</h1>
+        <p class="menu-sub">Rating in Side-a-Lama</p>
+    </section>
+
+    <section class="panel">
+        <h2>Best Scores</h2>
+        <table class="data-table">
+            <thead>
+            <tr><th>#</th><th>Game</th><th>Player</th><th>Points</th><th>Played on</th><th>Time</th></tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(scores)}">
+                <td colspan="4" class="empty">No scores yet.</td>
+            </tr>
+            <tr th:each="score, iter : ${scores}">
+                <td th:text="${iter.count}">1</td>
+                <td th:text="${score.player}">player</td>
+                <td class="num" th:text="${score.points}">0</td>
+                <td th:text="${#dates.format(score.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<div th:replace="fragments::footer"></div>
+</body>
+</html>

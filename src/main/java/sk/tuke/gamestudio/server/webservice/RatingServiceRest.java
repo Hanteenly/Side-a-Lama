@@ -18,7 +18,7 @@ public class RatingServiceRest {
     private RatingService ratingService;
 
     @GetMapping("/{game}")
-    public int getAverageRating(@PathVariable String game) {
+    public double getAverageRating(@PathVariable String game) {
         return ratingService.getAverageRating(game);
     }
 

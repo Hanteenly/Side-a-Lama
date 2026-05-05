@@ -25,7 +25,7 @@ public class RatingServiceRestClient implements RatingService {
     }
 
     @Override
-    public int getAverageRating(String gameName) {
+    public double getAverageRating(String gameName) {
         return restTemplate.getForObject(url + "/" + gameName, Integer.class);
     }
 

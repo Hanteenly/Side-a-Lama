@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Rating;
 
 import javax.persistence.EntityManager;
-import javax.persistence.GenerationType;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -35,14 +34,14 @@ public class RatingServiceJPA implements RatingService {
     }
 
     @Override
-    public int getAverageRating(String game) throws RatingException {
+    public double getAverageRating(String game) throws RatingException {
         Double avg = (Double) entityManager.createNamedQuery("Rating.getAverageRating")
                 .setParameter("game", game)
                 .getSingleResult();
         if (avg != null) {
-            return (int) Math.round(avg); // ← округлення замість обрізання
+            return Math.round(avg * 10.0) / 10.0;
         }
-        return 0;
+        return 0.0;
     }
 
     @Override
