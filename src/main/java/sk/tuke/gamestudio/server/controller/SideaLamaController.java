@@ -39,7 +39,9 @@ public class SideaLamaController {
     @Autowired
     private GameStateService gameStateService;
 
-    private Game game = new Game(4, 4);
+    private int boardSize;
+
+    private Game game = new Game(boardSize, boardSize);
 
     private String gameName;
 
@@ -72,8 +74,9 @@ public class SideaLamaController {
         return "top-score";
     }
     @PostMapping("/new")
-    public String startNewGame(@RequestParam String gameName, @RequestParam String player1Name, @RequestParam String player2Name, Model model) {
-        this.game = new Game(4, 4);
+    public String startNewGame(@RequestParam String gameName, @RequestParam String player1Name, @RequestParam String player2Name, @RequestParam int boardSize, Model model) {
+        this.boardSize = boardSize;
+        this.game = new Game(this.boardSize, this.boardSize);
         this.gameName = gameName;
         game.SetPlayer1(player1Name);
         game.SetPlayer2(player2Name);
@@ -85,13 +88,6 @@ public class SideaLamaController {
         game.SetPlayer2(player2Name);
         fillModel(model);
         return "redirect:/sidealama";
-    }
-    @GetMapping("/new")
-    public String newGame(Model model) {
-        game = new Game(5, 5);
-        game.randomTile();
-        fillModel(model);
-        return "sidealama";
     }
 
     @PostMapping("/comment")
@@ -159,7 +155,7 @@ public class SideaLamaController {
         model.addAttribute("GameSate",this.game);
         model.addAttribute("nextTile", game.getNextTile().toString());
         model.addAttribute("gameName", this.gameName);
-
+        model.addAttribute("boardSize", this.boardSize);
     }
 
     @PostMapping("/save")
@@ -190,7 +186,9 @@ public class SideaLamaController {
         try {
             GameState state = gameStateService.load(gameName);
             if (state != null) {
-                this.game = new Game(4, 4);
+                game.setBorderSize(this.boardSize);
+                int size = game.getBorderSize();
+                this.game = new Game(size, size);
                 game.SetPlayer1(state.getPlayer1());
                 game.SetPlayer2(state.getPlayer2());
                 game.setScores(state.getScore1(), state.getScore2());

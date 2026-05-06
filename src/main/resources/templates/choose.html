@@ -31,7 +31,15 @@
             <form action="/sidealama/new" method="post" class="choose-form">
                 <div class="field-group">
                     <label>Game name</label>
-                    <input type="text" name="gameName" placeholder="e.g. EpicBattle" maxlength="20" required/>
+                    <div class="game-control">
+                        <input type="text" name="gameName" placeholder="e.g. EpicBattle" maxlength="20" required/>
+                        <div class="states">
+                            <button type="button" class="btn" onclick="changeSize(-1)">◀</button>
+                                <h2 id="input">4</h2>
+                                <input type="hidden" name="boardSize" id="size" value="4">
+                            <button type="button" class="btn" onclick="changeSize(1)">▶</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="field-group">
                     <label>Player 1</label>
@@ -64,5 +72,24 @@
 </main>
 
 <div th:replace="fragments::footer"></div>
+<script>
+    let currentNumber = 4;
+    function changeSize(step){
+        currentNumber += step;
+        if (currentNumber > 9) {
+            currentNumber = 3;
+        }
+        if (currentNumber < 3) {
+            currentNumber = 9;
+        }
+
+        document.getElementById('input').innerText = currentNumber;
+
+        document.getElementById('size').value = currentNumber;
+
+    }
+
+
+</script>
 </body>
 </html>

@@ -11,6 +11,8 @@ public class Game {
     private String player1Name = "player1";
     private String player2Name = "player2";
 
+    private int borderSize;
+
     private Tile nextTile;
 
     private String Tile;
@@ -106,6 +108,12 @@ public class Game {
         }
     }
 
+    public int getBorderSize() {
+        return borderSize;
+    }
+    public void setBorderSize(int borderSize) {
+        this.borderSize = borderSize;
+    }
     public void printBoard(){
         board.print();
     }
