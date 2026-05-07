@@ -36,4 +36,9 @@ public class GameStudioServer {
     public GameStateService gameStateService() {
         return new GameStateServiceJPA();
     }
+
+    @Bean
+    public AdditionalCommentService additionalCommentService() {
+        return new AdditionalCommentServiceJPA();
+    }
 }
