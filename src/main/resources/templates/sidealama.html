@@ -109,22 +109,44 @@
         <ul class="comments-list" id="comments-list">
             <li th:if="${#lists.isEmpty(comments)}" class="empty">No comments yet.</li>
             <li th:each="comment : ${comments}" class="comment-item">
-                <div class = "comment-stars-wrapper">
-                <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
-                    <span class = "true-star" th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
-                </span>
-                <span class = "comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
-                    <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
-                </span>
+                <div class="comment-stars-wrapper">
+        <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
+            <span class="true-star" th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
+        </span>
+                    <span class="comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
+            <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
+        </span>
+                    <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}"></span>
                 </div>
                 <div class="comment-head">
                     <span class="comment-author" th:text="${comment.player}">anonymous</span>
-
-                    <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
                 </div>
+                <div class="comment" th:text="${comment.comments}"></div>
 
-                <div class = "comment" th:text="${comment.comments}"></div>
+                <div class="replies-section">
+                    <button class="btn btn-ghost btn-sm reply-toggle" onclick="toggleRepliesAndForm(this)">
+                        ↩ Reply <span th:if="${replies[comment.ident] != null and !#lists.isEmpty(replies[comment.ident])}"
+                          th:text="'▼ ' + ${#lists.size(replies[comment.ident])}">
+                    </span>
+                    </button>
 
+                    <div class="replies-body" style="display:none">
+                        <div class="replies" th:if="${replies[comment.ident] != null and !#lists.isEmpty(replies[comment.ident])}">
+                            <div th:each="reply : ${replies[comment.ident]}" class="reply-item">
+                                <div class="reply-header">
+                                    <span class="reply-author" th:text="${reply.player}">anonymous</span>
+                                    <span class="reply-date" th:text="${#dates.format(reply.playedOn, 'yyyy-MM-dd HH:mm')}"></span>
+                                </div>
+                                <div class="reply-text" th:text="${reply.additionalComment}"></div>
+                            </div>
+                        </div>
+                        <form action="/sidealama/reply" method="post" class="reply-form">
+                            <input type="hidden" name="commentId" th:value="${comment.ident}"/>
+                            <input type="text" name="content" placeholder="Your reply…" maxlength="65" required/>
+                            <button type="submit" class="btn ">Send</button>
+                        </form>
+                    </div>
+                </div>
             </li>
         </ul>
     </section>
@@ -221,6 +243,11 @@
                 });
             });
         });
+        function toggleRepliesAndForm(btn) {
+            const body = btn.nextElementSibling;
+            const isHidden = body.style.display === 'none';
+            body.style.display = isHidden ? 'block' : 'none';
+        }
     </script>
 
 </main>

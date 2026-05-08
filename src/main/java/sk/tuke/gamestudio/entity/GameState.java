@@ -22,12 +22,14 @@ public class GameState implements Serializable {
     private String CurrentPlayer;
     private int score1;
     private int score2;
-    private String board_data;
 
+    @Lob
+    private String board_data;
+    private int borderSize;
     public GameState() {
 
     }
-    public GameState(String GameName, String player1, String player2, String CurrentPlayer, int score1, int score2, String board_data) {
+    public GameState(String GameName, String player1, String player2, String CurrentPlayer, int score1, int score2, String board_data, int borderSize) {
         this.gameName = GameName;
         this.player1 = player1;
         this.player2 = player2;
@@ -35,6 +37,7 @@ public class GameState implements Serializable {
         this.score1 = score1;
         this.score2 = score2;
         this.board_data = board_data;
+        this.borderSize = borderSize;
     }
 
     public int getIdent() {
@@ -90,4 +93,6 @@ public class GameState implements Serializable {
     public void setScore1(int score1) { this.score1 = score1; }
     public void setScore2(int score2) { this.score2 = score2; }
     public void setBoard_data(String board_data) { this.board_data = board_data; }
+    public void setBorderSize(int borderSize) { this.borderSize = borderSize; }
+    public int getBorderSize() { return this.borderSize; }
 }

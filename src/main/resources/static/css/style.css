@@ -206,6 +206,88 @@ a {
     overflow-wrap: break-word;
     word-break: break-word;
 }
+.replies {
+    margin-left: 24px;
+    margin-top: 8px;
+    border-left: 2px solid var(--accent, #7c6af7);
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reply-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.reply-author {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent, #7c6af7);
+}
+
+.reply-date {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    color: var(--text-dim);
+}
+
+.reply-text {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    color: var(--text);
+}
+
+.reply-toggle {
+    margin-top: -35px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    width: 122px !important;
+    margin-left: auto !important;
+}
+
+.reply-form {
+    margin-left: 24px;
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+.reply-form input{
+    width: 400px !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text);
+    outline: none;
+
+}
+.reply-form .btn{
+    height: 40px !important;
+    margin-right: auto !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 10px !important;
+}
+
+.replies-section {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
 .status-row {
     display: flex;
     flex-wrap: wrap;
@@ -546,6 +628,7 @@ a {
 .comment-stars-wrapper{
     display: inline-flex;
     gap: 0;
+    align-items: center;
 }
 .comment-true-stars{
     color: var(--gold);
@@ -603,8 +686,14 @@ a {
     color: var(--accent-2);
 }
 .comment-date {
-    color: var(--text-muted);
+    color: var(--text-muted) !important;
     font-size: 0.78rem;
+    margin-left: 615px;
+}
+.comment-date2{
+    color: var(--text-muted) !important;
+    font-size: 0.78rem;
+    margin-left: 470px;
 }
 .comment-form{
     display: flex;
@@ -960,7 +1049,6 @@ input[type="text"] {
 }
 .comment-form .post{
     width: 4000px;
-
 }
 
 .btn-primary {

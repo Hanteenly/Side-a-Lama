@@ -30,31 +30,24 @@
             </div>
         </div>
 
-        <ul class="comments-list-page">
-            <li th:if="${#lists.isEmpty(comments)}" class="empty-page">
-                <span style="font-size:3rem">🦙</span>
-                <p>No comments yet. Be the first!</p>
-            </li>
+        <ul class="comments-list" id="comments-list">
+            <li th:if="${#lists.isEmpty(comments)}" class="empty">No comments yet.</li>
+            <li th:each="comment : ${comments}" class="comment-item">
+                <div class = "comment-stars-wrapper">
+                    <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
+                        <span class = "true-star" th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
+                    </span>
+                    <span class = "comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
+                        <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
+                    </span>
+                    <span class="comment-date2" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
+                </div>
+                <div class="comment-head">
+                    <span class="comment-author" th:text="${comment.player}">anonymous</span>
+                </div>
 
-            <li th:each="comment : ${comments}" class="comment-card">
-                <div class="comment-card-left">
-                    <div class="comment-avatar" th:text="${#strings.substring(comment.player, 0, 1).toUpperCase()}">A</div>
-                </div>
-                <div class="comment-card-right">
-                    <div class="comment-card-head">
-                        <span class="comment-author" th:text="${comment.player}">anonymous</span>
-                        <div class="comment-stars-wrapper">
-                            <span class="comment-true-stars" th:if="${commentRatings[comment.player] > 0}">
-                                <span th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
-                            </span>
-                            <span class="comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
-                                <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
-                            </span>
-                        </div>
-                        <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</span>
-                    </div>
-                    <div class="comment comment-text" th:text="${comment.comments}"></div>
-                </div>
+                <div class = "comment" th:text="${comment.comments}"></div>
+
             </li>
         </ul>
 

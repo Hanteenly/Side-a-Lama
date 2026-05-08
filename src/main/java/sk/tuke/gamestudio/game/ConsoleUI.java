@@ -103,7 +103,8 @@ public class ConsoleUI {
                         game.getCurrentlyPlayer(),
                         game.getScore1(),
                         game.getScore2(),
-                        game.getBoard().toDataString()
+                        game.getBoard().toDataString(),
+                        game.getBorderSize()
                 );
                 gameStateService.save(stateToSave);
                 System.out.println("✅ Game saved as: " + currentSaveName);

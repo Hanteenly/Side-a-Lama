@@ -4,6 +4,7 @@ public class Game {
     private Board board;
     private State state;
 
+    private String gameName;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -19,7 +20,7 @@ public class Game {
     private Tile tile;
     public Game(int rows, int cols) {
         board = new Board(rows, cols);
-
+        this.borderSize = rows;
         this.nextTile = board.randomTile();
 
         player1 = new Player(player1Name, 500);
@@ -135,11 +136,24 @@ public class Game {
         return player2.getScore();
     }
 
+    public void setCurrentPlayer(String name) {
+        if (player1.getName().equals(name)) {
+            currentPlayer = player1;
+        } else {
+            currentPlayer = player2;
+        }
+    }
     public String getCurrentlyPlayer(){
         return currentPlayer.getName();
     }
     public void setScores(int s1, int s2) {
         this.player1 = new Player(player1Name, s1);
         this.player2 = new Player(player2Name, s2);
+    }
+    public String getGameName(){
+        return gameName;
+    }
+    public void setGameName(String gameName){
+        this.gameName = gameName;
     }
 }
