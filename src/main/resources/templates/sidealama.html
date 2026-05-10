@@ -114,7 +114,9 @@
             <span class="true-star" th:each="i : ${#numbers.sequence(1, commentRatings[comment.player])}">★</span>
         </span>
                     <span class="comment-false-stars" th:if="${commentRatings[comment.player] < 5}">
+                        <span th:if="${commentRatings[comment.player] > 0}">
             <span th:each="i : ${#numbers.sequence(1, 5 - commentRatings[comment.player])}">☆</span>
+                        </span>
         </span>
                     <span class="comment-date" th:text="${#dates.format(comment.playedOn, 'yyyy-MM-dd HH:mm')}"></span>
                 </div>

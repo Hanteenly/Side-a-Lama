@@ -20,18 +20,20 @@
         <h2>Best Scores</h2>
         <table class="data-table">
             <thead>
-            <tr><th>#</th><th>Player</th><th>Points</th><th>Played on</th></tr>
+            <tr><th>#</th><th>Player</th><th>Points</th><th>Played on</th><th>Size Board</th></tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(scores)}">
-                <td colspan="4" class="empty">No scores yet.</td>
+                <td colspan="5" class="empty">No scores yet.</td>
             </tr>
             <tr th:each="score, iter : ${scores}">
                 <td th:text="${iter.count}">1</td>
                 <td th:text="${score.player}">player</td>
                 <td class="num" th:text="${score.points}">0</td>
                 <td th:text="${#dates.format(score.playedOn, 'yyyy-MM-dd HH:mm')}">2026-01-01</td>
+                <td th:text="${score.borderSize}"></td>
             </tr>
+
             </tbody>
         </table>
     </section>

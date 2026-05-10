@@ -626,7 +626,7 @@ a {
     text-align: center;
 }
 .comment-stars-wrapper{
-    display: inline-flex;
+    display: flex;
     gap: 0;
     align-items: center;
 }
@@ -690,7 +690,7 @@ a {
 .comment-date {
     color: var(--text-muted) !important;
     font-size: 0.78rem;
-    margin-left: 615px;
+    margin-left: auto !important;
 }
 
 .comment-date2{

@@ -40,4 +40,10 @@ public class GameStateServiceJPA implements GameStateService {
         }
         return null;
     }
+
+    @Override
+    public List<GameState> getGameStates(String name) throws GameStateException{
+        return entityManager.createNamedQuery("GameState.getGameStates").
+                setParameter("gameName", name).getResultList();
+    }
 }

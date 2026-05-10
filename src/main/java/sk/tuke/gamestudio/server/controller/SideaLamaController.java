@@ -264,13 +264,13 @@ public class SideaLamaController {
         } catch (IllegalArgumentException e) {}
         if (game.getState() == State.PLAYER1_WIN) {
             try {
-                scoreService.addScore(new Score("sidealama", game.getPlayer1(), game.getScore1(), new Date()));
+                scoreService.addScore(new Score("sidealama", game.getPlayer1(), game.getScore1(), new Date(), game.getBorderSize()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (game.getState() == State.PLAYER2_WIN) {
             try {
-                scoreService.addScore(new Score("sidealama", game.getPlayer2(), game.getScore2(), new Date()));
+                scoreService.addScore(new Score("sidealama", game.getPlayer2(), game.getScore2(), new Date(), game.getBorderSize()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -289,56 +289,5 @@ public class SideaLamaController {
             rows.add(row);
         }
         return rows;
-    }
-    public String getHtmlField() {
-        StringBuilder sb = new StringBuilder();
-        int rows = game.getBoard().getRows();
-        int cols = game.getBoard().getCols();
-
-        sb.append("<table class='game-board'>\n");
-
-        sb.append("<tr><td></td>");
-        for (int col = 0; col < cols; col++) {
-            sb.append("<td class='arrow-cell'>");
-            sb.append("<form action='/sidealama' method='get'>");
-            sb.append("<input type='hidden' name='dir' value='TOP'>");
-            sb.append("<input type='hidden' name='index' value='").append(col).append("'>");
-            sb.append("<button type='submit' class='arrow-button'>▼</button>");
-            sb.append("</form>");
-            sb.append("</td>");
-        }
-        sb.append("<td></td></tr>\n");
-
-        for (int row = 0; row < rows; row++) {
-            sb.append("<tr>");
-
-            sb.append("<td class='arrow-cell'>");
-            sb.append("<form action='/sidealama' method='get'>");
-            sb.append("<input type='hidden' name='dir' value='LEFT'>");
-            sb.append("<input type='hidden' name='index' value='").append(row).append("'>");
-            sb.append("<button type='submit' class='arrow-button'>▶</button>");
-            sb.append("</form>");
-            sb.append("</td>");
-
-            for (int col = 0; col < cols; col++) {
-                Tile tile = game.getBoard().getTile(row, col);
-                sb.append("<td class='tile-cell'>");
-                sb.append("<span class='tile'>").append(tile != null ? tile.toString() : "·").append("</span>");
-                sb.append("</td>");
-            }
-
-            sb.append("<td class='arrow-cell'>");
-            sb.append("<form action='/sidealama' method='get'>");
-            sb.append("<input type='hidden' name='dir' value='RIGHT'>");
-            sb.append("<input type='hidden' name='index' value='").append(row).append("'>");
-            sb.append("<button type='submit' class='arrow-button'>◀</button>");
-            sb.append("</form>");
-            sb.append("</td>");
-
-            sb.append("</tr>\n");
-        }
-
-        sb.append("</table>\n");
-        return sb.toString();
     }
 }

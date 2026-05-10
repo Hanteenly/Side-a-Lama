@@ -1,5 +1,5 @@
 package sk.tuke.gamestudio.game;
-
+/*
 import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.GameState;
 import sk.tuke.gamestudio.entity.Comment;
@@ -268,3 +268,4 @@ public class ConsoleUI {
         }
     }
 }
+*/

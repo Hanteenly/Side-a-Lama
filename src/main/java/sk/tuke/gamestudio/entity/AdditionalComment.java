@@ -17,7 +17,6 @@ public class AdditionalComment implements Serializable {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
     @com.fasterxml.jackson.annotation.JsonBackReference
     private AdditionalComment parent;
 

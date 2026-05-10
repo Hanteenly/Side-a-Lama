@@ -8,7 +8,9 @@ import java.io.Serializable;
         @NamedQuery(name = "GameState.load",
                 query = "SELECT g FROM GameState g WHERE g.gameName = :gameName ORDER BY g.ident DESC"),
         @NamedQuery(name = "GameState.resetGameStates",
-                query = "DELETE FROM GameState g")
+                query = "DELETE FROM GameState g"),
+        @NamedQuery(name = "GameState.getGameStates",
+                query = "SELECT borderSize FROM GameState g WHERE g.gameName = :gameName ORDER BY g.ident DESC")
 })
 public class GameState implements Serializable {
 

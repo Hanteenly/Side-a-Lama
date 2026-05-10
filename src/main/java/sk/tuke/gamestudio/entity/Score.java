@@ -22,15 +22,16 @@ public class Score implements Serializable {
     private String player;
     private int points;
     private Date playedOn;
-
+    private int borderSize;
     public Score() {
     }
 
-    public Score(String game, String player, int points, Date playedOn) {
+    public Score(String game, String player, int points, Date playedOn, int borderSize) {
         this.game = game;
         this.player = player;
         this.points = points;
         this.playedOn = playedOn;
+        this.borderSize = borderSize;
     }
 
     public int getIdent() {
@@ -48,6 +49,12 @@ public class Score implements Serializable {
         this.game = game;
     }
 
+    public int getBorderSize() {
+        return borderSize;
+    }
+    public void setBorderSize(int borderSize) {
+        this.borderSize = borderSize;
+    }
     public String getPlayer() {
         return player;
     }

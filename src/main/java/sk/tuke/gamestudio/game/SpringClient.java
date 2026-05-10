@@ -29,11 +29,11 @@ public class SpringClient {
         return new RestTemplate();
     }
 
-
+    /*
     public CommandLineRunner runner(ConsoleUI ui) {
         return args -> ui.play();
     }
-
+*/
 
     public Game game() {
         return new Game(4, 4);
